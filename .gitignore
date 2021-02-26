@@ -3,6 +3,8 @@ frontend/dist
 *.pyc
 */__pycache__/*.pyc
 
+backend/db.sqlite3
+
 # local env files
 *.env
 .env.local
