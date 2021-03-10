@@ -1,0 +1,53 @@
+version: "3.9"
+
+volumes:
+  static_volume:
+  media_volume:
+
+networks:
+  proxy-backend-postgres:
+    driver: bridge
+
+services:
+  postgres:
+    container_name: postgres-prod
+    image: library/postgres:13.2-alpine
+    env_file:
+      - ./.env.db.production
+    networks:
+      - proxy-backend-postgres
+
+  backend:
+    container_name: backend-prod
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    command: /start.prod.sh
+    volumes:
+      - './backend/:/usr/src/backend'
+      - 'static_volume:/usr/src/backend/staticfiles'
+      - 'media_volume:/usr/src/backend/mediafiles'
+    expose:
+      - 8000
+    env_file:
+      - ./backend/.env.production
+    networks:
+      - proxy-backend-postgres
+    depends_on:
+      - postgres
+
+  proxy:
+    container_name: proxy-prod
+    build:
+      context: .
+      dockerfile: proxy/Dockerfile
+    ports:
+      - '8000:80'
+    depends_on:
+      - backend
+    volumes:
+      - './proxy/nginx.prod.conf:/etc/nginx/nginx.conf:ro'
+      - 'static_volume:/usr/src/backend/staticfiles'
+      - 'media_volume:/usr/src/backend/mediafiles'
+    networks:
+      - proxy-backend-postgres
