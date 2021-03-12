@@ -9,7 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/auth/login', Login.as_view(), name='login'),
     path('api/v1/auth/verify', Verify.as_view(), name='verify'),
-    path('api/v1/auth/refresh', Refresh.as_view(), name='refresh')
+    path('api/v1/auth/refresh', Refresh.as_view(), name='refresh'),
 ]
 
 if settings.DEBUG:
