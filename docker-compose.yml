@@ -13,7 +13,7 @@ services:
     container_name: postgres-prod
     image: library/postgres:13.2-alpine
     env_file:
-      - ./.env.db.production
+      - ./.env.db
     networks:
       - proxy-backend-postgres
 
@@ -30,7 +30,7 @@ services:
     expose:
       - 8000
     env_file:
-      - ./backend/.env.production
+      - ./backend/.env
     networks:
       - proxy-backend-postgres
     depends_on:

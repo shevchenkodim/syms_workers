@@ -5,7 +5,7 @@ from django.core.management.utils import get_random_secret_key
 
 env = environ.Env()
 
-ENV_FILE = env.str('ENV_FILE', default='.env.development')
+ENV_FILE = env.str('ENV_FILE', default='.env')
 
 environ.Env.read_env(env_file=ENV_FILE)
 
