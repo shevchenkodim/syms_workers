@@ -1,10 +1,11 @@
 #!/bin/sh
 
+# check if Postgres is working before applying migrations and starting the Django development server
 if [[ "$DATABASE" = "postgres" ]]
 then
     echo "Waiting for postgres..."
 
-    while ! nc -z $DJANGO_SETTINGS_DATABASES_DEFAULT_HOST $DJANGO_SETTINGS_DATABASES_DEFAULT_PORT; do
+    while ! nc -z $DATABASES_HOST $DATABASES_PORT; do
       sleep 0.1
     done
 
