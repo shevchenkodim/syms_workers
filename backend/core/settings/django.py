@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'common',
+    'broker'
 ]
 
 MIDDLEWARE = [
@@ -120,3 +121,5 @@ STATICFILES_DIRS = []
 MEDIA_URL = '/mediafiles/'
 
 MEDIA_ROOT = BASE_DIR / 'mediafiles'
+
+CELERY_BROKER_URL = os.environ.get('BROKER_HOST', 'amqp://localhost')
