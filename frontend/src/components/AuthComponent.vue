@@ -32,6 +32,8 @@
             label="Mobile phone"
             placeholder="Mobile phone"
             prepend-icon="mdi-cellphone-iphone"
+            v-model="phone"
+            v-mask="'+38(###)###-##-##'"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -51,6 +53,8 @@
             label="OTP-code"
             placeholder="OTP-code"
             prepend-icon="mdi-code-not-equal-variant"
+            v-model="otpCode"
+            v-mask="'####'"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -70,6 +74,7 @@
             label="First Name"
             placeholder="First Name"
             prepend-icon="mdi-account"
+            v-model="firstName"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -89,6 +94,7 @@
             label="Last Name"
             placeholder="Last Name"
             prepend-icon="mdi-account"
+            v-model="lastName"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -108,6 +114,8 @@
             label="Email Address"
             placeholder="Email Address"
             prepend-icon="mdi-email-variant"
+            v-model="email"
+            type="email"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -127,6 +135,8 @@
             label="Password"
             placeholder="Password"
             prepend-icon="mdi-pencil"
+            type="password"
+            v-model="password"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -137,7 +147,9 @@
           cols="4"
           class="d-flex justify-end"
         >
-          <v-btn>
+          <v-btn
+            @click.prevent="signIn()"
+          >
             Sign in
           </v-btn>
         </v-col>
@@ -156,11 +168,26 @@ export default {
   name: 'Auth',
   components: { AuthOverlay },
   data: () => ({
-    isProductsLoading: false
-  })
+    isProductsLoading: false,
+    phone: null,
+    email: null,
+    midName: null,
+    otpCode: null,
+    password: null,
+    lastName: null,
+    firstName: null
+  }),
+  methods: {
+    signIn () {
+      this.isProductsLoading = true
+      setTimeout(() => {
+        this.isProductsLoading = false
+        // this.$forceUpdate()
+      }, 2000)
+    }
+  }
 }
 </script>
 
 <style scoped>
-
 </style>

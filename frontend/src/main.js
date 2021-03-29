@@ -6,7 +6,9 @@ import vuetify from './plugins/vuetify'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueSpinners from 'vue-spinners'
+import VueMask from 'v-mask'
 
+Vue.use(VueMask)
 Vue.use(VueSpinners)
 Vue.use(VueAxios, axios)
 
