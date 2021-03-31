@@ -4,10 +4,6 @@ const getDefaultState = () => ({
   authLoading: false,
   authError: false,
   authErrors: undefined,
-  customerLoading: false,
-  customerError: false,
-  customerErrors: undefined,
-  userData: undefined,
   tokensSet: false
 })
 
@@ -32,9 +28,6 @@ export default {
       localStorage.setItem(process.env.VUE_APP_ACCESS_STORAGE_KEY, access)
       localStorage.setItem(process.env.VUE_APP_REFRESH_STORAGE_KEY, refresh)
     },
-    setCustomerData (state, data) {
-      state.userData = data
-    },
     logout (state) {
       localStorage.removeItem(process.env.VUE_APP_REFRESH_STORAGE_KEY)
       localStorage.removeItem(process.env.VUE_APP_ACCESS_STORAGE_KEY)
@@ -50,20 +43,6 @@ export default {
         state.authErrors = detail
       }
     },
-    getCustomerInfoStart (state) {
-      state.customerLoading = true
-      state.customerError = false
-      state.customerErrors = undefined
-    },
-    getCustomerInfoError (state, { detail = undefined }) {
-      state.customerLoading = false
-      state.customerError = true
-      state.authErrors = detail
-    },
-    getCustomerSuccess (state) {
-      state.customerLoading = false
-      state.customerError = false
-    },
     tokenAreSet (state, data) {
       state.tokensSet = true
       localStorage.setItem(process.env.VUE_APP_ACCESS_STORAGE_KEY, data.access)
@@ -71,9 +50,7 @@ export default {
   },
   actions: {
     async initialize ({ commit }) {
-      if (
-        localStorage.getItem(process.env.VUE_APP_REFRESH_STORAGE_KEY) !== null
-      ) {
+      if (localStorage.getItem(process.env.VUE_APP_REFRESH_STORAGE_KEY) !== null) {
         await auth.refresh({
           refresh: localStorage.getItem(process.env.VUE_APP_REFRESH_STORAGE_KEY)
         })
@@ -86,7 +63,7 @@ export default {
       commit('initStart')
       await auth.login({ username, password })
         .then(({ data }) => {
-          commit('', data)
+          commit('initSuccess', data)
         })
         .catch(({ response }) => {
           commit('authenticationError', { detail: response.data.detail })
@@ -103,7 +80,6 @@ export default {
       })
         .then(({ data }) => {
           commit('initSuccess', data)
-          commit('setCustomerData', data)
         })
         .catch(({ response }) => {
           commit('authenticationError', { detail: response.data.detail })
