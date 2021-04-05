@@ -1,3 +1,4 @@
+from rest_framework.status import HTTP_200_OK
 from rest_framework.response import Response
 
 
@@ -6,7 +7,7 @@ class ApiException(Exception):
         self.error = error
 
 
-def json_response(success, response, status):
+def json_response(success, response, status=HTTP_200_OK):
     """ Returned json response with code status """
     return Response({
         'success': success,

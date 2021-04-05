@@ -1,15 +1,12 @@
 from core import settings
-from django.urls import path
 from django.contrib import admin
+from django.urls import path, include
 from django.conf.urls.static import static
-from api.view_modules.simple_jwt_view import Login, Verify, Refresh
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/auth/login', Login.as_view(), name='login'),
-    path('api/v1/auth/verify', Verify.as_view(), name='verify'),
-    path('api/v1/auth/refresh', Refresh.as_view(), name='refresh'),
+    path('api/v1/auth', include('api.urls'), name='auth'),
 ]
 
 if settings.DEBUG:
