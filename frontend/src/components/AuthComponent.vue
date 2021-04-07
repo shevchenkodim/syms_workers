@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-form>
+    <v-form v-on:submit="signIn()">
       <v-row
         class="d-flex justify-center"
       >
@@ -17,6 +17,7 @@
         </v-col>
       </v-row>
       <v-row
+        v-if="authForm.phone.show"
         class="d-flex justify-center"
       >
         <v-col
@@ -25,6 +26,7 @@
           sm="6"
           cols="12"
         >
+          <!--clearable-->
           <v-text-field
             dark
             dense
@@ -32,12 +34,14 @@
             label="Mobile phone"
             placeholder="Mobile phone"
             prepend-icon="mdi-cellphone-iphone"
-            v-model="phone"
-            v-mask="'+38(###)###-##-##'"
+            v-model="authForm.phone.value"
+            v-mask="'+38(0##)###-##-##'"
+            :disabled="!authForm.phone.editable"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row
+        v-if="authForm.otpCode.show"
         class="d-flex justify-center"
       >
         <v-col
@@ -53,12 +57,14 @@
             label="OTP-code"
             placeholder="OTP-code"
             prepend-icon="mdi-code-not-equal-variant"
-            v-model="otpCode"
+            v-model="authForm.otpCode.value"
             v-mask="'####'"
+            :disabled="!authForm.otpCode.editable"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row
+        v-if="authForm.firstName.show"
         class="d-flex justify-center"
       >
         <v-col
@@ -74,11 +80,13 @@
             label="First Name"
             placeholder="First Name"
             prepend-icon="mdi-account"
-            v-model="firstName"
+            v-model="authForm.firstName.value"
+            :disabled="!authForm.firstName.editable"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row
+        v-if="authForm.lastName.show"
         class="d-flex justify-center"
       >
         <v-col
@@ -94,11 +102,13 @@
             label="Last Name"
             placeholder="Last Name"
             prepend-icon="mdi-account"
-            v-model="lastName"
+            v-model="authForm.lastName.value"
+            :disabled="!authForm.lastName.editable"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row
+        v-if="authForm.email.show"
         class="d-flex justify-center"
       >
         <v-col
@@ -114,12 +124,14 @@
             label="Email Address"
             placeholder="Email Address"
             prepend-icon="mdi-email-variant"
-            v-model="email"
+            v-model="authForm.email.value"
+            :disabled="!authForm.email.editable"
             type="email"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row
+        v-if="authForm.password.show"
         class="d-flex justify-center"
       >
         <v-col
@@ -136,7 +148,8 @@
             placeholder="Password"
             prepend-icon="mdi-pencil"
             type="password"
-            v-model="password"
+            v-model="authForm.password.value"
+            :disabled="!authForm.password.editable"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -148,6 +161,7 @@
           class="d-flex justify-end"
         >
           <v-btn
+            type="submit"
             @click.prevent="signIn()"
           >
             Sign in
@@ -155,35 +169,65 @@
         </v-col>
       </v-row>
 
-      <AuthOverlay :isLoading="isProductsLoading"></AuthOverlay>
+      <AuthOverlay :isLoading="isAuthLoading"></AuthOverlay>
 
     </v-form>
   </v-container>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import AuthOverlay from '@/components/ThirdParty/LoaderOverlay'
 
 export default {
   name: 'Auth',
   components: { AuthOverlay },
   data: () => ({
-    isProductsLoading: false,
-    phone: null,
-    email: null,
-    midName: null,
-    otpCode: null,
-    password: null,
-    lastName: null,
-    firstName: null
+    authForm: {
+      step: 'FIRST',
+      phone: {
+        value: null,
+        show: true,
+        editable: true
+      },
+      email: {
+        value: null,
+        show: false,
+        editable: false
+      },
+      lastName: {
+        value: null,
+        show: false,
+        editable: false
+      },
+      firstName: {
+        value: null,
+        show: false,
+        editable: false
+      },
+      otpCode: {
+        value: null,
+        show: false,
+        editable: false
+      },
+      password: {
+        value: null,
+        show: false,
+        editable: false
+      }
+    }
   }),
+  computed: {
+    ...mapGetters('auth', ['isAuthLoading'])
+  },
   methods: {
     signIn () {
-      this.isProductsLoading = true
-      setTimeout(() => {
-        this.isProductsLoading = false
-        // this.$forceUpdate()
-      }, 2000)
+      this.$store.dispatch('auth/signIn', { ...this.authForm })
+
+      // setTimeout(() => {
+      //   this.isProductsLoading = false
+      //   // this.$forceUpdate()
+      // }, 2000)
     }
   }
 }

@@ -1,16 +1,13 @@
 import { session } from '@/api/session'
 
 export default {
-  login (payload) {
-    return session.post('api/v1/auth/login', payload)
-  },
   verify (payload) {
-    return session.post('api/v1/auth/verify', payload)
+    return session.post(`${process.env.VUE_APP_BACKEND_URL}/api/v1/auth/verify`, payload)
   },
   signIn (payload) {
-    return session.post('api/v1/auth/sign-in/', payload)
+    return session.post(`${process.env.VUE_APP_BACKEND_URL}/api/v1/auth/login`, payload)
   },
   refresh (payload) {
-    return session.post('api/v1/auth/', payload)
+    return session.post(`${process.env.VUE_APP_BACKEND_URL}/api/v1/auth/`, payload)
   }
 }

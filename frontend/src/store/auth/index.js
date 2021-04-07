@@ -13,6 +13,9 @@ export default {
   getters: {
     isAuthenticated (state) {
       return state.tokensSet === true
+    },
+    isAuthLoading (state) {
+      return state.authLoading
     }
   },
   mutations: {
@@ -59,24 +62,16 @@ export default {
           })
       }
     },
-    async login ({ commit }, { username, password }) {
-      commit('initStart')
-      await auth.login({ username, password })
-        .then(({ data }) => {
-          commit('initSuccess', data)
-        })
-        .catch(({ response }) => {
-          commit('authenticationError', { detail: response.data.detail })
-        })
-    },
     async signIn ({ commit }, payload) {
-      commit('initSuccess')
+      commit('initStart')
       await auth.signIn({
-        email: payload.email,
-        last_name: payload.lastName,
-        password: payload.password,
-        username: payload.username,
-        first_name: payload.firstName
+        step: payload.step,
+        phone: payload.phone.value,
+        email: payload.email.value,
+        lastName: payload.lastName.value,
+        firstName: payload.firstName.value,
+        otpCode: payload.otpCode.value,
+        password: payload.password.value
       })
         .then(({ data }) => {
           commit('initSuccess', data)
