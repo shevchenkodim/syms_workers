@@ -6,9 +6,9 @@ from api.view_modules.simple_jwt_view import Login, Verify, Refresh
 router = routers.DefaultRouter()
 
 urlpatterns = [
-    path('login', BaseAuth.as_view(), name='auth'),
-    path('verify', Verify.as_view(), name='verify'),
-    path('refresh', Refresh.as_view(), name='refresh'),
+    path('auth/login', BaseAuth.as_view(), name='auth'),
+    path('auth/verify', Verify.as_view(), name='verify'),
+    path('auth/refresh', Refresh.as_view(), name='refresh'),
 ]
 
 urlpatterns += router.urls
