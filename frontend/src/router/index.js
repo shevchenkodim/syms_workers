@@ -29,9 +29,9 @@ const requireUnauthenticated = (to, from, next) => {
 const routes = [
   {
     path: '/',
-    name: 'Main',
+    name: 'Home',
     meta: { layout: 'main' },
-    component: () => import('../views/Main.vue'),
+    component: () => import('../views/Home.vue'),
     beforeEnter: requireAuthenticated
   },
   {
