@@ -24,6 +24,11 @@ export default {
       state.authError = false
       state.authErrors = undefined
     },
+    initEnd (state) {
+      state.authLoading = false
+      state.authError = false
+      state.authErrors = undefined
+    },
     initSuccess (state, { access, refresh }) {
       state.tokensSet = true
       state.authLoading = false
@@ -64,7 +69,7 @@ export default {
     },
     async signIn ({ commit }, payload) {
       commit('initStart')
-      await auth.signIn({
+      return await auth.signIn({
         step: payload.step,
         phone: payload.phone.value,
         email: payload.email.value,
@@ -73,12 +78,6 @@ export default {
         otpCode: payload.otpCode.value,
         password: payload.password.value
       })
-        .then(({ data }) => {
-          commit('initSuccess', data)
-        })
-        .catch(({ response }) => {
-          commit('authenticationError', { detail: response.data.detail })
-        })
     },
     logout ({ commit }) {
       commit('logout')

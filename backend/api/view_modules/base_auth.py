@@ -1,10 +1,10 @@
 import logging
 from common.models import User
 from rest_framework.views import APIView
-from common.helpers import json_response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.permissions import AllowAny
 from broker.services.custom_jwt_auth.jwt import jwt_auth
+from common.helpers import json_response, GenerateOtpCode
 from common.tools import clean_phone, check_phone, check_email
 
 logger = logging.getLogger('syms_marketplace.auth')
@@ -20,37 +20,35 @@ class BaseAuth(APIView):
     def post(request):
         data = request.data
         step = data.get('step', first)
-        state = {"phone": True, "phone_editable": True}
+        state = {"phone": get_state(True, True, data.get("phone", None))}
         if step == first:
             phone = data.get("phone", None)
             if phone:
                 phone = clean_phone(phone)
                 if check_phone(phone):
-                    auth_otp = '1111'
+                    # auth_otp = GenerateOtpCode.get_random()
+                    auth_otp = 1111
                     try:
-                        client = User.objects.get(phone=phone)
-                        state = {"phone": True, "phone_editable": False,
-                                 "otp": True, "otp_editable": False,
-                                 "password": True, "password_editable": True}
-                        parameters = {"otp_code": auth_otp}
-                        return json_response(True, {"state": state, "parameters": parameters}, HTTP_200_OK)
+                        User.objects.get(phone=phone)
+                        state["phone"]["editable"] = False
+                        state["password"] = get_state(True, True, "")
+                        state["otpCode"] = get_state(True, True, auth_otp)
                     except User.DoesNotExist:
-                        state = {"phone": True, "phone_editable": False,
-                                 "otp": True, "otp_editable": False,
-                                 "password": True, "password_editable": True,
-                                 "first_name": True, "first_name_editable": True,
-                                 "last_name": True, "last_name_editable": True,
-                                 "email": True, "email_editable": True}
-                        parameters = {"otp_code": auth_otp}
-                        return json_response(True, {"state": state, "parameters": parameters}, HTTP_200_OK)
+                        state["phone"]["show"] = True
+                        state["phone"]["editable"] = True
+                        state["email"] = get_state(True, True, "")
+                        state["password"] = get_state(True, True, "")
+                        state["lastName"] = get_state(True, True, "")
+                        state["firstName"] = get_state(True, True, "")
+                        state["otpCode"] = get_state(True, False, auth_otp)
+                    state["step"] = second
+                    return json_response(True, state, HTTP_200_OK)
                 else:
                     errors = {"message": "Вкажіть вірний номер телефону"}
-                    state = {"phone": True, "phone_editable": True}
-                    return json_response(True, {"state": state, "errors": errors}, HTTP_200_OK)
+                    return json_response(False, {**state, "errors": errors}, HTTP_200_OK)
             else:
                 errors = {"message": "Будь ласка введіть номер телефону"}
-                state = {"phone": True, "phone_editable": True}
-                return json_response(True, {"state": state, "errors": errors}, HTTP_200_OK)
+                return json_response(False, {**state, "errors": errors}, HTTP_200_OK)
         elif step == second:
             phone = data.get("phone", None)
             if phone:
@@ -60,13 +58,11 @@ class BaseAuth(APIView):
                     password = data.get("password")
                     if not client.check_password(password):
                         errors = {"message": "Пароль невірний"}
-                        state = {"show_phone": True, "phone_editable": False,
-                                 "show_otp": True, "otp_editable": False,
-                                 "show_password": True, "step": second,
-                                 "password_enabled": True}
-
+                        state["phone"] = get_state(True, False, data.get("phone", None))
+                        state["otpCode"] = get_state(True, False, 1111)
+                        state["password"] = get_state(True, True, "")
                         logger.info(f"Користувач [{client.email}, {client.phone}] Пароль невірний!")
-                        return json_response(True, {"state": state, "errors": errors}, HTTP_200_OK)
+                        return json_response(False, {**state, "errors": errors}, HTTP_200_OK)
 
                     response = jwt_auth.get_token(user=client)
                     logger.info(f"Користувач [{client.email}, {client.phone}] Успішно зробив вхід до системи!")
@@ -102,3 +98,8 @@ class BaseAuth(APIView):
                     return json_response(True, response, HTTP_200_OK)
 
         return json_response(True, state, HTTP_200_OK)
+
+
+def get_state(show: bool, editable: bool, value) -> dict:
+    """ Helper function for returned state """
+    return {"show": show, "editable": editable, "value": value}

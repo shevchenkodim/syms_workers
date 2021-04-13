@@ -176,7 +176,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import AuthOverlay from '@/components/ThirdParty/LoaderOverlay'
 
 export default {
@@ -218,16 +218,31 @@ export default {
     }
   }),
   computed: {
-    ...mapGetters('auth', ['isAuthLoading'])
+    ...mapGetters('auth', ['isAuthLoading']),
+    ...mapMutations('auth', ['initSuccess', 'initEnd', 'authenticationError'])
   },
   methods: {
     signIn () {
       this.$store.dispatch('auth/signIn', { ...this.authForm })
-
-      // setTimeout(() => {
-      //   this.isProductsLoading = false
-      //   // this.$forceUpdate()
-      // }, 2000)
+        .then(({ data }) => {
+          if (!data.success) {
+          } else if (data.response.access && data.response.refresh) {
+            this.$store.commit('auth/initSuccess', data.response)
+            this.$router.push({ name: 'Home' })
+          } else {
+            this.updateFormData(data.response)
+          }
+        })
+        .catch(() => {
+        })
+        .finally(() => {
+          this.$store.commit('auth/initEnd')
+        })
+    },
+    updateFormData (data) {
+      for (const i in data) {
+        this.authForm[i] = data[i]
+      }
     }
   }
 }

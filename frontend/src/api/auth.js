@@ -8,6 +8,6 @@ export default {
     return session.post(`${process.env.VUE_APP_BACKEND_URL}/api/v1/auth/login`, payload)
   },
   refresh (payload) {
-    return session.post(`${process.env.VUE_APP_BACKEND_URL}/api/v1/auth/`, payload)
+    return session.post(`${process.env.VUE_APP_BACKEND_URL}/api/v1/auth/refresh`, payload)
   }
 }
