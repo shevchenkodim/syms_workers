@@ -1,10 +1,10 @@
 import logging
 from common.models import User
+from api.helpers import json_response
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK
 from rest_framework.permissions import AllowAny
 from broker.services.custom_jwt_auth.jwt import jwt_auth
-from common.helpers import json_response, GenerateOtpCode
 from common.tools import clean_phone, check_phone, check_email
 
 logger = logging.getLogger('syms_marketplace.auth')

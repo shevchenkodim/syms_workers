@@ -226,6 +226,7 @@ export default {
       this.$store.dispatch('auth/signIn', { ...this.authForm })
         .then(({ data }) => {
           if (!data.success) {
+            this.$toastr('error', data.response.errors.message)
           } else if (data.response.access && data.response.refresh) {
             this.$store.commit('auth/initSuccess', data.response)
             this.$router.push({ name: 'Home' })

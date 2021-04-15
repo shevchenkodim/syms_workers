@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework import routers
-from .view_modules.base_auth import BaseAuth
-from api.view_modules.simple_jwt_view import Login, Verify, Refresh
+from api.view_modules.auth.base_auth import BaseAuth
+from api.view_modules.auth.simple_jwt_view import Verify, Refresh
 
 router = routers.DefaultRouter()
 

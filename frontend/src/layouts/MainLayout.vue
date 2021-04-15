@@ -94,11 +94,23 @@
                 <v-list-item-title>Список бажаннь</v-list-item-title>
               </v-list-item>
 
-              <v-list-item>
+              <v-list-item
+                v-if="!isAuthenticated"
+              >
                 <v-list-item-action>
                   <v-icon>mdi-login-variant</v-icon>
                 </v-list-item-action>
                 <v-list-item-title>Вхід / Реєстрація</v-list-item-title>
+              </v-list-item>
+
+              <v-list-item
+                v-else
+                @click.prevent="logout"
+              >
+                <v-list-item-action>
+                  <v-icon>mdi-logout</v-icon>
+                </v-list-item-action>
+                <v-list-item-title>Выход</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-card>
@@ -155,63 +167,6 @@
       </v-container>
 
       <v-row>
-        <v-col cols="12">
-          <h3>Новинки</h3>
-        </v-col>
-        <v-col cols="3">
-          <v-card
-            :loading="false"
-            max-width="250"
-          >
-            <template slot="progress">
-              <v-progress-linear
-                color="deep-purple"
-                height="10"
-                indeterminate
-              ></v-progress-linear>
-            </template>
-
-            <v-img
-              height="250"
-              src="https://i1.rozetka.ua/goods/13545489/112005632_images_13545489308.jpg"
-            ></v-img>
-
-            <v-card-title>Apple iPhone 11</v-card-title>
-
-            <v-card-text>
-              <v-row
-                align="center"
-                class="mx-0 pb-2"
-              >
-                <v-rating
-                  :value="2"
-                  color="amber"
-                  dense
-                  half-increments
-                  readonly
-                  size="14"
-                ></v-rating>
-
-                <div class="grey--text ml-4">
-                  8 відгуків
-                </div>
-              </v-row>
-
-              <div class="pt-2 pb-2 subtitle-1 d-flex justify-space-between">
-                <b style="color: black;"><strike>23500 грн.</strike></b>
-                <b class="text-muted" style="color: red;">18500 грн.</b>
-              </div>
-
-              <v-chip class="green" dark>
-                <v-icon>mdi-check-bold</v-icon>
-                Є в наявності
-              </v-chip>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-
-      <v-row>
         <v-col cols="4">
           <div class="d-flex justify-center align-center pb-2">
             <b>Приєднуйтеся до наших соц. мереж</b>
@@ -262,9 +217,7 @@
       <v-row class="pb-3">
         <v-col cols="3" v-for="info in infoCards" :key="info">
           <v-card
-            elevation="2"
             outlined
-            shaped
           >
             <v-card-title class="blue-grey lighten-2"
                           v-text="info.title"
@@ -300,8 +253,16 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'MainLayout',
+  computed: {
+    ...mapActions(['auth/logout']),
+    ...mapGetters({
+      isAuthenticated: 'auth/isAuthenticated'
+    })
+  },
   data: () => ({
     drawer: false,
     items: [
@@ -334,6 +295,12 @@ export default {
       }
     ]
   }),
+  methods: {
+    logout () {
+      this.$store.dispatch('auth/logout')
+      this.$router.push({ name: 'Login' })
+    }
+  },
   watch: {
     group () {
       this.drawer = false
