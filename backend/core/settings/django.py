@@ -66,7 +66,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-CORS_ORIGIN_WHITELIST = env.list('DJANGO_CORS_ORIGIN', default=['http://127.0.0.1:8080'])
+CORS_ORIGIN_WHITELIST = env.list('DJANGO_CORS_ORIGIN', default=['http://localhost:8080', ])
 
 AUTH_USER_MODEL = 'common.User'
 

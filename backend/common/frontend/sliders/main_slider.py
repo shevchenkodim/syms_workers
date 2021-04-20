@@ -10,3 +10,7 @@ class MainCarouselModel(models.Model):
     class Meta:
         db_table = 'frontend_main_carousel'
         ordering = ['order_id']
+
+    def delete(self, *args, **kwargs):
+        self.item_image.delete()
+        super(MainCarouselModel, self).delete(*args, **kwargs)
