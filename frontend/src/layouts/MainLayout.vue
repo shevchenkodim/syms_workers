@@ -26,6 +26,76 @@
 
         <v-spacer></v-spacer>
 
+        <v-menu
+          v-model="notifications"
+          :close-on-content-click="false"
+          :nudge-width="200"
+          offset-x
+          bottom
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              icon
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>mdi-bell-outline</v-icon>
+            </v-btn>
+          </template>
+
+          <v-card>
+            <v-list>
+              <v-list-item>
+                <v-list-item-content>
+                  View read (5)
+                </v-list-item-content>
+
+                <v-list-item-action>
+                  <v-btn
+                    fab
+                    small
+                  >
+                    <v-icon>mdi-email-open</v-icon>
+                  </v-btn>
+                </v-list-item-action>
+              </v-list-item>
+            </v-list>
+
+            <v-divider></v-divider>
+
+            <v-list three-line>
+              <template v-for="(item, index) in notification_items">
+                <v-subheader
+                  v-if="item.header"
+                  :key="item.header"
+                  v-text="item.header"
+                ></v-subheader>
+
+                <v-divider
+                  v-else-if="item.divider"
+                  :key="index"
+                  :inset="item.inset"
+                ></v-divider>
+
+                <v-list-item
+                  v-else
+                  :key="item.title"
+                >
+                  <v-list-item-avatar>
+                    <v-img :src="item.avatar"></v-img>
+                  </v-list-item-avatar>
+
+                  <v-list-item-content>
+                    <v-list-item-title v-html="item.title"></v-list-item-title>
+                    <v-list-item-subtitle v-html="item.subtitle"></v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </template>
+            </v-list>
+          </v-card>
+        </v-menu>
+
         <v-btn icon>
           <v-icon>mdi-cart-outline</v-icon>
         </v-btn>
@@ -293,6 +363,39 @@ export default {
         title: 'Партнери',
         items: ['Kabanchik.ua', 'Вчасно', 'Zakupki.prom.ua']
       }
+    ],
+    notifications: false,
+    notification_items: [
+      { header: 'Today' },
+      {
+        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+        title: 'Brunch this weekend?',
+        subtitle: '<span class="text--primary">Ali Connors</span> &mdash; Ill be in your neighborhood doing errands this weekend. Do you want to hang out?'
+      },
+      { divider: true, inset: true },
+      {
+        avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+        title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
+        subtitle: '<span class="text--primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but Im out of town this weekend.'
+      },
+      { divider: true, inset: true },
+      {
+        avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+        title: 'Oui oui',
+        subtitle: '<span class="text--primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?'
+      },
+      { divider: true, inset: true },
+      {
+        avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
+        title: 'Birthday gift',
+        subtitle: '<span class="text--primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?'
+      },
+      { divider: true, inset: true },
+      {
+        avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
+        title: 'Recipe to try',
+        subtitle: '<span class="text--primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.'
+      }
     ]
   }),
   methods: {
@@ -307,6 +410,70 @@ export default {
     }
   }
 }
+
+    const chat_id = JSON.parse(document.getElementById('chat_id').textContent);
+
+    const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/messenger/'
+        + chat_id
+        + '/'
+    );
+
+    // //Add to div message
+    // chatSocket.onmessage = function(e) {
+    //     const data = JSON.parse(e.data);
+    //     if (data.user_id == $('#chat-message-submit').attr('data-user-id')) {
+    //         document.querySelector('#block-messages').insertAdjacentHTML('beforeend', '\
+    //             <div class="row d-flex justify-content-end align-items-center pr-2 mb-2 mt-2">\
+    //                 <span class="pr-3">'+ data.message +'</span>\
+    //                 <a href="'+ data.user_url +'">\
+    //                     <img class="" style="border-radius: 100px;" src="'+ data.user_image +'"\ alt="" width="40" height="40">\
+    //                 </a>\
+    //             </div>\
+    //         ');
+    //     } else {
+    //         document.querySelector('#block-messages').insertAdjacentHTML('beforeend', '\
+    //             <div class="row d-flex justify-content-start align-items-center pl-2 mb-2 mt-2">\
+    //                 <a href="'+ data.user_url +'">\
+    //                     <img class="" style="border-radius: 100px;" src="'+ data.user_image +'"\ alt="" width="40" height="40">\
+    //                 </a>\
+    //                 <span class="pl-3">'+ data.message +'</span>\
+    //             </div>\
+    //         ');
+    //     };
+    //     let objDiv = document.getElementById("block-messages");
+    //     objDiv.scrollTop = objDiv.scrollHeight;
+    // };
+    //
+    // //Info closed connect
+    // chatSocket.onclose = function(e) {
+    //     console.error('Chat socket closed unexpectedly');
+    // };
+    //
+    // document.querySelector('#chat-message-input').focus();
+    // document.querySelector('#chat-message-input').onkeyup = function(e) {
+    //     if (e.keyCode === 13) {  // enter, return
+    //         document.querySelector('#chat-message-submit').click();
+    //     }
+    // };
+    //
+    // document.querySelector('#chat-message-submit').onclick = function(e) {
+    //     const messageInputDom = document.querySelector('#chat-message-input');
+    //     const message = messageInputDom.value;
+    //     const user_id = $('#chat-message-submit').attr('data-user-id');
+    //     const user_image = $('#user-images').attr('src');
+    //     const user_url = $('#user-url').attr('href');
+    //     chatSocket.send(JSON.stringify({
+    //         'message': message,
+    //         'user_id': user_id,
+    //         'user_url': user_url,
+    //         'user_image': user_image
+    //     }));
+    //     messageInputDom.value = '';
+    // };
+
 </script>
 
 <style scoped>

@@ -73,12 +73,12 @@ export default {
   components: { Carousel },
   data: () => ({
     itemsImages: [
-      {
-        src: 'https://content1.rozetka.com.ua/banner_main/image/original/170837155.jpg'
-      },
-      {
-        src: 'https://content1.rozetka.com.ua/banner_main/image/original/171744989.jpg'
-      },
+      // {
+      //   src: 'https://content1.rozetka.com.ua/banner_main/image/original/170837155.jpg'
+      // },
+      // {
+      //   src: 'https://content1.rozetka.com.ua/banner_main/image/original/171744989.jpg'
+      // },
       {
         src: 'https://content.rozetka.com.ua/banner_main/image/original/171736584.jpg'
       },

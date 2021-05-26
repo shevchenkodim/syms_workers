@@ -18,6 +18,8 @@ SECRET_KEY = env.str('SECRET_KEY', default=get_random_secret_key())
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1'])
 
 INSTALLED_APPS = [
+    'channels',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -27,6 +29,7 @@ INSTALLED_APPS = [
 
     'corsheaders',
 
+    'notifications',
     'common',
     'broker',
     'api'
@@ -67,6 +70,17 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 CORS_ORIGIN_WHITELIST = env.list('DJANGO_CORS_ORIGIN', default=['http://localhost:8080', ])
+
+ASGI_APPLICATION = 'core.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
 
 AUTH_USER_MODEL = 'common.User'
 
