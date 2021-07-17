@@ -58,12 +58,15 @@ export default {
   },
   actions: {
     async initialize ({ commit }) {
-      if (localStorage.getItem(process.env.VUE_APP_REFRESH_STORAGE_KEY) !== null) {
+      if (localStorage.getItem(process.env.VUE_APP_REFRESH_STORAGE_KEY)) {
         await auth.refresh({
           refresh: localStorage.getItem(process.env.VUE_APP_REFRESH_STORAGE_KEY)
         })
           .then(({ data }) => {
             commit('tokenAreSet', data)
+          })
+          .catch(() => {
+            commit('logout')
           })
       }
     },
