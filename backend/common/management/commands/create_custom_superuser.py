@@ -10,7 +10,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         User.objects.create_superuser(
-            username=environment['SUPERUSER_USERNAME'],
+            is_staff=True,
+            phone=environment['SUPERUSER_PHONE'],
             email=environment['SUPERUSER_EMAIL'],
             password=environment['SUPERUSER_PASSWORD'],
             first_name=environment['SUPERUSER_FIRSTNAME'],

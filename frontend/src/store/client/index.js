@@ -26,7 +26,7 @@ export default {
     getCustomerSuccess (state) {
       state.customerLoading = false
       state.customerError = false
-    },
+    }
   },
   actions: {
   }

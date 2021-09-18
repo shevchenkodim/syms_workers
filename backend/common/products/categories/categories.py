@@ -12,7 +12,7 @@ class CategoryModel(SeoModel):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Date created')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Date updated')
     icon = models.CharField(max_length=50, verbose_name='Icon')
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='parent')
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='parent_item')
 
     def __str__(self):
         return self.name

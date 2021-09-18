@@ -1,9 +1,9 @@
 <template>
   <v-carousel v-bind:height="height">
     <v-carousel-item
-      v-for="(item,i) in itemsImages"
+      v-for="(item, i) in itemsImages"
       :key="i"
-      :src="item.src"
+      :src="item.item_image"
       reverse-transition="fade-transition"
       transition="fade-transition"
     ></v-carousel-item>

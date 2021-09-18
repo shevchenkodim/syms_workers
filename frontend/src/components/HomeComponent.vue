@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <Carousel :itemsImages="itemsImages" :height="350" />
+        <Carousel :itemsImages="getMainSliderImages" :height="350" />
       </v-col>
     </v-row>
 
@@ -68,25 +68,18 @@
 
 <script>
 import Carousel from '@/components/ThirdParty/Carousel'
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'HomeComponent',
   components: { Carousel },
-  data: () => ({
-    itemsImages: [
-      // {
-      //   src: 'https://content1.rozetka.com.ua/banner_main/image/original/170837155.jpg'
-      // },
-      // {
-      //   src: 'https://content1.rozetka.com.ua/banner_main/image/original/171744989.jpg'
-      // },
-      {
-        src: 'https://content.rozetka.com.ua/banner_main/image/original/171736584.jpg'
-      },
-      {
-        src: 'https://content1.rozetka.com.ua/banner_main/image/original/170593288.jpg'
-      }
-    ]
-  })
+  computed: {
+    ...mapGetters('home', ['isHomeLoading', 'getMainSliderImages'])
+  },
+  data: () => ({}),
+  mounted: function () {
+    this.$store.dispatch('home/loadMainSliderImages')
+  }
 }
 </script>
 

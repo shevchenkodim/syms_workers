@@ -69,7 +69,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-CORS_ORIGIN_WHITELIST = env.list('DJANGO_CORS_ORIGIN', default=['http://localhost:8080', ])
+CORS_ORIGIN_WHITELIST = env.list('DJANGO_CORS_ORIGIN', default=['http://localhost:8080', 'http://127.0.0.1:8080'])
 
 ASGI_APPLICATION = 'core.asgi.application'
 CHANNEL_LAYERS = {
@@ -116,21 +116,14 @@ TEMPLATES = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env.str('DATABASES_NAME'),
+        'USER': env.str('DATABASES_USER'),
+        'PASSWORD': env.str('DATABASES_PASSWORD'),
+        'HOST': env.str('DATABASES_HOST'),
+        'PORT': env.str('DATABASES_PORT'),
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': env.str('DATABASES_NAME'),
-#         'USER': env.str('DATABASES_USER'),
-#         'PASSWORD': env.str('DATABASES_PASSWORD'),
-#         'HOST': env.str('DATABASES_HOST'),
-#         'PORT': env.str('DATABASES_PORT'),
-#     }
-# }
 
 STATIC_URL = '/staticfiles/'
 

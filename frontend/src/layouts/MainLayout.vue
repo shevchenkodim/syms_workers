@@ -15,6 +15,7 @@
         <v-spacer></v-spacer>
 
         <v-text-field
+          v-if="showSearch"
           flat
           dense
           rounded
@@ -197,7 +198,7 @@
 
         <v-list-item class="px-2 py-1">
           <v-list-item-avatar>
-            <v-icon>mdi-view-list-outline</v-icon>
+<!--            <v-icon>mdi-view-list-outline</v-icon>-->
           </v-list-item-avatar>
 
           <v-list-item-title><b>Категорії товарів</b></v-list-item-title>
@@ -285,7 +286,7 @@
       </v-row>
 
       <v-row class="pb-3">
-        <v-col cols="3" v-for="info in infoCards" :key="info">
+        <v-col cols="3" v-for="(info, index) in infoCards" :key="index">
           <v-card
             outlined
           >
@@ -294,8 +295,8 @@
             ></v-card-title>
             <v-card-text>
               <v-list>
-                <v-item v-for="item in info.items"
-                        :key="item"
+                <v-item v-for="(item, ind) in info.items"
+                        :key="ind"
                 >
                   <v-list-item-title
                     v-text="item"
@@ -315,7 +316,10 @@
       class="d-flex justify-center"
     >
       Developed by
-      <a href="https://www.instagram.com/dima_shevchenko99/">
+      <a href="https://www.instagram.com/dmytro.shevchenko.dev/"
+         target="_blank"
+         class="pl-2"
+      >
         Dmytro Shevchenko
       </a>
     </v-footer>
@@ -340,6 +344,7 @@ export default {
       { title: 'My Account', icon: 'mdi-account' },
       { title: 'Users', icon: 'mdi-account-group-outline' }
     ],
+    showSearch: true,
     mini: true,
     fav: true,
     menu: false,
@@ -383,26 +388,21 @@ export default {
         avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
         title: 'Oui oui',
         subtitle: '<span class="text--primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?'
-      },
-      { divider: true, inset: true },
-      {
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-        title: 'Birthday gift',
-        subtitle: '<span class="text--primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?'
-      },
-      { divider: true, inset: true },
-      {
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-        title: 'Recipe to try',
-        subtitle: '<span class="text--primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.'
       }
     ]
   }),
   methods: {
+    doCheckShowSearchInput () {
+      this.showSearch = window.innerWidth >= 600
+      this.$forceUpdate()
+    },
     logout () {
       this.$store.dispatch('auth/logout')
       this.$router.push({ name: 'Login' })
     }
+  },
+  created () {
+    this.doCheckShowSearchInput()
   },
   watch: {
     group () {
