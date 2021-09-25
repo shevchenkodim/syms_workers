@@ -4,7 +4,8 @@ const getDefaultHomeState = () => ({
   homeLoading: false,
   homeError: false,
   homeErrors: undefined,
-  homeMainSlider: []
+  homeMainSlider: [],
+  homeNoveltyProducts: []
 })
 
 export default {
@@ -16,6 +17,9 @@ export default {
     },
     getMainSliderImages (state) {
       return state.homeMainSlider
+    },
+    getNoveltyProducts (state) {
+      return state.homeNoveltyProducts
     },
     getBackendUrl (state) {
       return process.env.VUE_APP_BACKEND_URL
@@ -34,13 +38,28 @@ export default {
     },
     setMainSliderImages (state, data) {
       state.homeMainSlider = data
+    },
+    setNoveltyProducts (state, data) {
+      state.homeNoveltyProducts = data
     }
   },
   actions: {
     async loadMainSliderImages ({ commit }) {
+      commit('initStart')
       await home.getMainSliderImages()
         .then(({ data }) => {
           commit('setMainSliderImages', data)
+        })
+        .catch(() => {})
+        .finally(() => {
+          commit('initEnd')
+        })
+    },
+    async loadNoveltyProducts ({ commit }) {
+      commit('initStart')
+      await home.getNoveltyProducts()
+        .then(({ data }) => {
+          commit('setNoveltyProducts', data)
         })
         .catch(() => {})
         .finally(() => {

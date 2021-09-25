@@ -280,7 +280,7 @@
           </div>
           <div class="d-flex justify-center align-center">
             <img width="36" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1024px-Facebook_Logo_%282019%29.png" class="mr-1">
-            <img width="36" src="https://c7.hotpng.com/preview/145/243/586/logo-computer-icons-clip-art-instagram-layout-thumbnail.jpg" class="ml-1 mr-1">
+            <img width="36" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/600px-Instagram_icon.png" class="ml-1 mr-1">
             <img width="36" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/600px-Telegram_logo.svg.png" class="ml-1 mr-1">
             <img height="36" src="https://w7.pngwing.com/pngs/928/563/png-transparent-youtube-logo-computer-icons-youtube-angle-company-monochrome.png" class="mr-1">
           </div>
@@ -314,7 +314,7 @@
             <b>Звертайтеся з будь-яких питаннь</b>
           </div>
           <div class="d-flex justify-center align-center">
-            <img width="36" src="https://w7.pngwing.com/pngs/699/791/png-transparent-facebook-messenger-social-media-logo-computer-icons-facebook-messenger-logo-logo-messenger-logo-blue-angle-triangle.png" class="mr-1">
+            <img width="36" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Facebook_Messenger_logo_2020.svg/768px-Facebook_Messenger_logo_2020.svg.png" class="mr-1">
             <img width="36" src="https://f0.pngfuel.com/png/322/453/viber-application-png-clip-art.png" class="ml-1 mr-1">
             <img width="36" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/600px-Telegram_logo.svg.png" class="ml-1 mr-1">
           </div>

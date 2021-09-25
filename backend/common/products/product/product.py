@@ -27,6 +27,10 @@ class Product(SeoModel):
         db_table = 'product'
         ordering = ['created_at']
 
+    @property
+    def is_available_product(self):
+        return all([self.is_available, self.is_active, self.quantity > 0])
+
     def __str__(self):
         return self.product_id
 
