@@ -3,7 +3,7 @@
     <v-carousel-item
       v-for="(item, i) in itemsImages"
       :key="i"
-      :src="item.item_image"
+      :src="media_url + item.item_image"
       reverse-transition="fade-transition"
       transition="fade-transition"
     ></v-carousel-item>
@@ -13,7 +13,7 @@
 <script>
 export default {
   name: 'Carousel',
-  props: ['itemsImages', 'height']
+  props: ['itemsImages', 'height', 'media_url']
 }
 </script>
 

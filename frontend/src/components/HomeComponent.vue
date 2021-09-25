@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <Carousel :itemsImages="getMainSliderImages" :height="350" />
+        <Carousel :itemsImages="getMainSliderImages" :height="350" :media_url="getBackendUrl" />
       </v-col>
     </v-row>
 
@@ -74,7 +74,7 @@ export default {
   name: 'HomeComponent',
   components: { Carousel },
   computed: {
-    ...mapGetters('home', ['isHomeLoading', 'getMainSliderImages'])
+    ...mapGetters('home', ['isHomeLoading', 'getMainSliderImages', 'getBackendUrl'])
   },
   data: () => ({}),
   mounted: function () {

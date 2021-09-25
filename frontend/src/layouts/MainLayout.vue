@@ -27,75 +27,75 @@
 
         <v-spacer></v-spacer>
 
-        <v-menu
-          v-model="notifications"
-          :close-on-content-click="false"
-          :nudge-width="200"
-          offset-x
-          bottom
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              icon
-              dark
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-icon>mdi-bell-outline</v-icon>
-            </v-btn>
-          </template>
+<!--        <v-menu-->
+<!--          v-model="notifications"-->
+<!--          :close-on-content-click="false"-->
+<!--          :nudge-width="200"-->
+<!--          offset-x-->
+<!--          bottom-->
+<!--        >-->
+<!--          <template v-slot:activator="{ on, attrs }">-->
+<!--            <v-btn-->
+<!--              icon-->
+<!--              dark-->
+<!--              v-bind="attrs"-->
+<!--              v-on="on"-->
+<!--            >-->
+<!--              <v-icon>mdi-bell-outline</v-icon>-->
+<!--            </v-btn>-->
+<!--          </template>-->
 
-          <v-card>
-            <v-list>
-              <v-list-item>
-                <v-list-item-content>
-                  View read (5)
-                </v-list-item-content>
+<!--          <v-card>-->
+<!--            <v-list>-->
+<!--              <v-list-item>-->
+<!--                <v-list-item-content>-->
+<!--                  View read (5)-->
+<!--                </v-list-item-content>-->
 
-                <v-list-item-action>
-                  <v-btn
-                    fab
-                    small
-                  >
-                    <v-icon>mdi-email-open</v-icon>
-                  </v-btn>
-                </v-list-item-action>
-              </v-list-item>
-            </v-list>
+<!--                <v-list-item-action>-->
+<!--                  <v-btn-->
+<!--                    fab-->
+<!--                    small-->
+<!--                  >-->
+<!--                    <v-icon>mdi-email-open</v-icon>-->
+<!--                  </v-btn>-->
+<!--                </v-list-item-action>-->
+<!--              </v-list-item>-->
+<!--            </v-list>-->
 
-            <v-divider></v-divider>
+<!--            <v-divider></v-divider>-->
 
-            <v-list three-line>
-              <template v-for="(item, index) in notification_items">
-                <v-subheader
-                  v-if="item.header"
-                  :key="item.header"
-                  v-text="item.header"
-                ></v-subheader>
+<!--            <v-list three-line>-->
+<!--              <template v-for="(item, index) in notification_items">-->
+<!--                <v-subheader-->
+<!--                  v-if="item.header"-->
+<!--                  :key="item.header"-->
+<!--                  v-text="item.header"-->
+<!--                ></v-subheader>-->
 
-                <v-divider
-                  v-else-if="item.divider"
-                  :key="index"
-                  :inset="item.inset"
-                ></v-divider>
+<!--                <v-divider-->
+<!--                  v-else-if="item.divider"-->
+<!--                  :key="index"-->
+<!--                  :inset="item.inset"-->
+<!--                ></v-divider>-->
 
-                <v-list-item
-                  v-else
-                  :key="item.title"
-                >
-                  <v-list-item-avatar>
-                    <v-img :src="item.avatar"></v-img>
-                  </v-list-item-avatar>
+<!--                <v-list-item-->
+<!--                  v-else-->
+<!--                  :key="item.title"-->
+<!--                >-->
+<!--                  <v-list-item-avatar>-->
+<!--                    <v-img :src="item.avatar"></v-img>-->
+<!--                  </v-list-item-avatar>-->
 
-                  <v-list-item-content>
-                    <v-list-item-title v-html="item.title"></v-list-item-title>
-                    <v-list-item-subtitle v-html="item.subtitle"></v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </template>
-            </v-list>
-          </v-card>
-        </v-menu>
+<!--                  <v-list-item-content>-->
+<!--                    <v-list-item-title v-html="item.title"></v-list-item-title>-->
+<!--                    <v-list-item-subtitle v-html="item.subtitle"></v-list-item-subtitle>-->
+<!--                  </v-list-item-content>-->
+<!--                </v-list-item>-->
+<!--              </template>-->
+<!--            </v-list>-->
+<!--          </v-card>-->
+<!--        </v-menu>-->
 
         <v-btn icon>
           <v-icon>mdi-cart-outline</v-icon>
@@ -194,14 +194,15 @@
         temporary
         dark
       >
-        <!-- expand-on-hover-->
-
-        <v-list-item class="px-2 py-1">
-          <v-list-item-avatar>
-<!--            <v-icon>mdi-view-list-outline</v-icon>-->
-          </v-list-item-avatar>
-
-          <v-list-item-title><b>Категорії товарів</b></v-list-item-title>
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon>mdi mdi-format-list-bulleted-square</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>
+            <b>
+              Категорії товарів
+            </b>
+          </v-list-item-title>
         </v-list-item>
 
         <v-divider></v-divider>
@@ -214,19 +215,54 @@
             v-model="group"
             active-class="deep-primary--text text--accent-4"
           >
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-camera</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Фото та відео</v-list-item-title>
-            </v-list-item>
+            <div
+              v-for="category in allCategories"
+              :key="category.id"
+            >
+              <v-list-item
+                v-if="!category.children.length"
+              >
+                <v-list-item-icon>
+                  <v-icon>
+                    {{category.icon}}
+                  </v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>
+                  {{category.name}}
+                </v-list-item-title>
+              </v-list-item>
 
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-cellphone-iphone</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Смартфони, ТВ</v-list-item-title>
-            </v-list-item>
+              <v-list-group
+                v-else
+                :value="true"
+                :prepend-icon="category.icon"
+              >
+                <template v-slot:activator>
+                  <v-list-item-title>
+                    {{category.name}}
+                  </v-list-item-title>
+                </template>
+
+                <v-list-item
+                  v-for="child in category.children"
+                  :key="child.id"
+                  class="pl-2"
+                >
+                  <v-list-item-icon>
+                    <v-icon
+                      class="pl-1"
+                      :small=true
+                    >
+                      {{child.icon}}
+                    </v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-title>
+                    {{child.name}}
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list-group>
+              <v-divider></v-divider>
+            </div>
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>
@@ -332,24 +368,16 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'MainLayout',
   computed: {
-    ...mapActions(['auth/logout']),
+    ...mapActions(['auth/logout', 'common/loadCategories']),
     ...mapGetters({
-      isAuthenticated: 'auth/isAuthenticated'
+      isAuthenticated: 'auth/isAuthenticated',
+      allCategories: 'common/getAllCategories'
     })
   },
   data: () => ({
-    drawer: false,
-    items: [
-      { title: 'Home', icon: 'mdi-home-city' },
-      { title: 'My Account', icon: 'mdi-account' },
-      { title: 'Users', icon: 'mdi-account-group-outline' }
-    ],
+    drawer: true,
     showSearch: true,
-    mini: true,
-    fav: true,
     menu: false,
-    message: false,
-    hints: true,
     group: null,
     infoCards: [
       {
@@ -368,27 +396,6 @@ export default {
         title: 'Партнери',
         items: ['Kabanchik.ua', 'Вчасно', 'Zakupki.prom.ua']
       }
-    ],
-    notifications: false,
-    notification_items: [
-      { header: 'Today' },
-      {
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-        title: 'Brunch this weekend?',
-        subtitle: '<span class="text--primary">Ali Connors</span> &mdash; Ill be in your neighborhood doing errands this weekend. Do you want to hang out?'
-      },
-      { divider: true, inset: true },
-      {
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-        title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-        subtitle: '<span class="text--primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but Im out of town this weekend.'
-      },
-      { divider: true, inset: true },
-      {
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-        title: 'Oui oui',
-        subtitle: '<span class="text--primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?'
-      }
     ]
   }),
   methods: {
@@ -403,10 +410,11 @@ export default {
   },
   created () {
     this.doCheckShowSearchInput()
+    this.$store.dispatch('common/loadCategories')
   },
   watch: {
     group () {
-      this.drawer = false
+      // this.drawer = false
     }
   }
 }

@@ -19,4 +19,4 @@ class CategoryModel(SeoModel):
 
     class Meta:
         db_table = 'categories'
-        ordering = ['-created_at']
+        ordering = ['name', '-created_at']

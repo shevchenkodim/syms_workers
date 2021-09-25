@@ -16,6 +16,9 @@ export default {
     },
     getMainSliderImages (state) {
       return state.homeMainSlider
+    },
+    getBackendUrl (state) {
+      return process.env.VUE_APP_BACKEND_URL
     }
   },
   mutations: {

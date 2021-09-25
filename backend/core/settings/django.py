@@ -69,7 +69,12 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-CORS_ORIGIN_WHITELIST = env.list('DJANGO_CORS_ORIGIN', default=['http://localhost:8080', 'http://127.0.0.1:8080'])
+CORS_ALLOW_ALL_ORIGINS = env.bool('DJANGO_SETTINGS_CORS_ALLOW_ALL_ORIGINS', default=False)
+CORS_ALLOWED_ORIGINS = env.list('DJANGO_SETTINGS_CORS_ALLOWED_ORIGINS', default=['http://localhost:8080'])
+CORS_ORIGINS_WHITELIST = [
+    env.str('FRONT_CORS_URL'),
+    env.str('CDN_SYMS_WORKERS_CORS_URL')
+]
 
 ASGI_APPLICATION = 'core.asgi.application'
 CHANNEL_LAYERS = {
