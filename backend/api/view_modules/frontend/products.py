@@ -3,13 +3,15 @@ from rest_framework import viewsets, permissions
 from common.products.product.product import Product
 from common.products.comments.comments import ProductComment
 from common.products.product.product_image import ProductImage
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from common.serializers.product_serializers import ProductModelSerializer
 
 
 class NoveltiesViewSet(viewsets.ViewSet):
     """ ViewSet for viewing categories. """
     count = 8
-    permission_classes = [permissions.AllowAny]
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
     def list(self, request):
         qs_serializer = []

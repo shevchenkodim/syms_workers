@@ -5,7 +5,7 @@ export const session = axios.create({})
 export function setAuthHeader () {
   return {
     headers: {
-      Authorization: `JWT ${
+      Authorization: `Bearer ${
         localStorage.getItem(process.env.VUE_APP_ACCESS_STORAGE_KEY)
       }`
     }

@@ -124,14 +124,18 @@
               <v-list-item>
                 <v-list-item-avatar>
                   <img
-                    src="https://avatars.githubusercontent.com/u/16786985?s=460&u=9f2fe771bbc8bcfcc195fde83ca914b00a98da54&v=4"
+                    :src="userData.image ? (backendUrl + userData.image) : 'https://avatars.githubusercontent.com/u/16786985?s=460&u=9f2fe771bbc8bcfcc195fde83ca914b00a98da54&v=4'"
                     alt="avatars"
                   >
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title>Admin Admins</v-list-item-title>
-                  <v-list-item-subtitle>System administrator</v-list-item-subtitle>
+                  <v-list-item-title>
+                    {{userData.last_name}} {{userData.first_name}}
+                  </v-list-item-title>
+                  <v-list-item-subtitle>
+                    {{userData.email}}
+                  </v-list-item-subtitle>
                 </v-list-item-content>
 
                 <v-list-item-action>
@@ -368,10 +372,12 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'MainLayout',
   computed: {
-    ...mapActions(['auth/logout', 'common/loadCategories']),
+    ...mapActions(['auth/logout']),
     ...mapGetters({
       isAuthenticated: 'auth/isAuthenticated',
-      allCategories: 'common/getAllCategories'
+      allCategories: 'common/getAllCategories',
+      userData: 'user/getUserData',
+      backendUrl: 'home/getBackendUrl'
     })
   },
   data: () => ({
@@ -411,6 +417,7 @@ export default {
   created () {
     this.doCheckShowSearchInput()
     this.$store.dispatch('common/loadCategories')
+    this.$store.dispatch('user/loadUserDetail')
   },
   watch: {
     group () {

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from '@/store/auth'
+import user from '@/store/user'
 import home from '@/store/home'
 import common from '@/store/common'
 import createLogger from 'vuex/dist/logger'
@@ -15,6 +16,7 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     auth,
+    user,
     home,
     common
   },

@@ -2,12 +2,14 @@ from rest_framework.response import Response
 from rest_framework.generics import get_object_or_404
 from rest_framework import viewsets, generics, permissions
 from common.products.categories.categories import CategoryModel
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from common.serializers.frontend_serializers import CategoryModelSerializer
 
 
 class CategoriesViewSet(viewsets.ViewSet):
     """ ViewSet for viewing categories. """
-    permission_classes = [permissions.AllowAny]
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
     def list(self, request):
         qs_serializer = []
