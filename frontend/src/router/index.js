@@ -35,10 +35,31 @@ const routes = [
     beforeEnter: requireAuthenticated
   },
   {
+    path: '/category/:category_code',
+    name: 'Category',
+    meta: { layout: 'main' },
+    component: () => import('../views/Category.vue'),
+    beforeEnter: requireAuthenticated
+  },
+  {
+    path: '/product/:product_code',
+    name: 'Product',
+    meta: { layout: 'main' },
+    component: () => import('../views/Product.vue'),
+    beforeEnter: requireAuthenticated
+  },
+  {
     path: '/login',
     name: 'Login',
     meta: { layout: 'auth' },
     component: () => import('../views/Auth.vue'),
+    beforeEnter: requireUnauthenticated
+  },
+  {
+    path: '/*',
+    name: 'Page404',
+    meta: { layout: 'main' },
+    component: () => import('../views/Page404.vue'),
     beforeEnter: requireUnauthenticated
   }
 ]

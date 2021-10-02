@@ -277,76 +277,78 @@
         <router-view />
       </v-container>
 
-      <v-row>
-        <v-col cols="4">
-          <div class="d-flex justify-center align-center pb-2">
-            <b>Приєднуйтеся до наших соц. мереж</b>
-          </div>
-          <div class="d-flex justify-center align-center">
-            <img width="36" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1024px-Facebook_Logo_%282019%29.png" class="mr-1">
-            <img width="36" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/600px-Instagram_icon.png" class="ml-1 mr-1">
-            <img width="36" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/600px-Telegram_logo.svg.png" class="ml-1 mr-1">
-            <img height="36" src="https://w7.pngwing.com/pngs/928/563/png-transparent-youtube-logo-computer-icons-youtube-angle-company-monochrome.png" class="mr-1">
-          </div>
-        </v-col>
-        <v-col cols="4">
-          <div class="d-flex justify-center align-center pb-2">
-            <b>Дізнавайтеся про все першими</b>
-          </div>
-          <v-row>
-            <v-col cols="8">
-              <v-text-field
-                dense
-                outlined
-                placeholder="Email Address"
-                prepend-icon="mdi-email-variant"
-                type="email"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="4">
-              <v-btn
-                class="info m-0"
-                elevation="2"
-              >
-                Підписатися
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col cols="4">
-          <div class="d-flex justify-center align-center pb-2">
-            <b>Звертайтеся з будь-яких питаннь</b>
-          </div>
-          <div class="d-flex justify-center align-center">
-            <img width="36" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Facebook_Messenger_logo_2020.svg/768px-Facebook_Messenger_logo_2020.svg.png" class="mr-1">
-            <img width="36" src="https://f0.pngfuel.com/png/322/453/viber-application-png-clip-art.png" class="ml-1 mr-1">
-            <img width="36" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/600px-Telegram_logo.svg.png" class="ml-1 mr-1">
-          </div>
-        </v-col>
-      </v-row>
-
-      <v-row class="pb-3">
-        <v-col cols="3" v-for="(info, index) in infoCards" :key="index">
-          <v-card
-            outlined
-          >
-            <v-card-title class="blue-grey lighten-2"
-                          v-text="info.title"
-            ></v-card-title>
-            <v-card-text>
-              <v-list>
-                <v-item v-for="(item, ind) in info.items"
-                        :key="ind"
+      <v-container>
+        <v-row>
+          <v-col cols="4">
+            <div class="d-flex justify-center align-center pb-2">
+              <b>Приєднуйтеся до наших соц. мереж</b>
+            </div>
+            <div class="d-flex justify-center align-center">
+              <img width="36" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1024px-Facebook_Logo_%282019%29.png" class="mr-1">
+              <img width="36" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/600px-Instagram_icon.png" class="ml-1 mr-1">
+              <img width="36" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/600px-Telegram_logo.svg.png" class="ml-1 mr-1">
+              <img height="36" src="https://w7.pngwing.com/pngs/928/563/png-transparent-youtube-logo-computer-icons-youtube-angle-company-monochrome.png" class="mr-1">
+            </div>
+          </v-col>
+          <v-col cols="4">
+            <div class="d-flex justify-center align-center pb-2">
+              <b>Дізнавайтеся про все першими</b>
+            </div>
+            <v-row>
+              <v-col cols="8">
+                <v-text-field
+                  dense
+                  outlined
+                  placeholder="Email Address"
+                  prepend-icon="mdi-email-variant"
+                  type="email"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="4">
+                <v-btn
+                  class="info m-0"
+                  elevation="2"
                 >
-                  <v-list-item-title
-                    v-text="item"
-                  ></v-list-item-title>
-                </v-item>
-              </v-list>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
+                  Підписатися
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="4">
+            <div class="d-flex justify-center align-center pb-2">
+              <b>Звертайтеся з будь-яких питаннь</b>
+            </div>
+            <div class="d-flex justify-center align-center">
+              <img width="36" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Facebook_Messenger_logo_2020.svg/768px-Facebook_Messenger_logo_2020.svg.png" class="mr-1">
+              <img width="36" src="https://f0.pngfuel.com/png/322/453/viber-application-png-clip-art.png" class="ml-1 mr-1">
+              <img width="36" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/600px-Telegram_logo.svg.png" class="ml-1 mr-1">
+            </div>
+          </v-col>
+        </v-row>
+
+        <v-row class="pb-3">
+          <v-col cols="3" v-for="(info, index) in infoCards" :key="index">
+            <v-card
+              outlined
+            >
+              <v-card-title class="blue-grey lighten-2"
+                            v-text="info.title"
+              ></v-card-title>
+              <v-card-text>
+                <v-list>
+                  <v-item v-for="(item, ind) in info.items"
+                          :key="ind"
+                  >
+                    <v-list-item-title
+                      v-text="item"
+                    ></v-list-item-title>
+                  </v-item>
+                </v-list>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
 
     </v-main>
 
