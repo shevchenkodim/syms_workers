@@ -9,7 +9,12 @@
 
         <v-toolbar-title>
           <v-icon>mdi-cart</v-icon>
-          <b> SYMS</b>
+            <router-link
+              :to="{ path: `/`}"
+              style="text-decoration: none; color: white;"
+            >
+              <b> SYMS</b>
+            </router-link>
         </v-toolbar-title>
 
         <v-spacer></v-spacer>
@@ -169,6 +174,13 @@
                 <v-list-item-title>Список бажаннь</v-list-item-title>
               </v-list-item>
 
+              <v-list-item>
+                <v-list-item-action>
+                  <v-icon>mdi-history</v-icon>
+                </v-list-item-action>
+                <v-list-item-title>Історія замовленнь</v-list-item-title>
+              </v-list-item>
+
               <v-list-item
                 v-if="!isAuthenticated"
               >
@@ -232,7 +244,12 @@
                   </v-icon>
                 </v-list-item-icon>
                 <v-list-item-title>
-                  {{category.name}}
+                  <router-link
+                    :to="{ path: `/category/${category.code_name}`}"
+                    style="text-decoration: none; color: white;"
+                  >
+                    {{category.name}}
+                  </router-link>
                 </v-list-item-title>
               </v-list-item>
 
@@ -261,7 +278,12 @@
                     </v-icon>
                   </v-list-item-icon>
                   <v-list-item-title>
-                    {{child.name}}
+                    <router-link
+                      :to="{ path: `/category/${child.code_name}`}"
+                      style="text-decoration: none; color: white;"
+                    >
+                      {{child.name}}
+                    </router-link>
                   </v-list-item-title>
                 </v-list-item>
               </v-list-group>

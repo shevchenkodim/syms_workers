@@ -5,6 +5,12 @@ from common.dictionaries.dictionaries import BrandDict
 from common.products.categories.categories import CategoryModel
 
 
+class AvailableProductManager(models.Manager):
+    def get_queryset(self):
+        return super(AvailableProductManager, self).get_queryset()\
+            .filter(is_active=True, is_available=True, quantity__gt=0)
+
+
 class Product(SeoModel):
     """ Product model """
     name = models.CharField(max_length=255, verbose_name='Product name')
@@ -22,6 +28,9 @@ class Product(SeoModel):
     seller = models.ForeignKey(SellerModel, on_delete=models.CASCADE, verbose_name='Seller')
     brand = models.ForeignKey(BrandDict, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Brand')
     short_character = models.CharField(max_length=255, null=True, blank=True, verbose_name='Short character')
+
+    objects = models.Manager()
+    available = AvailableProductManager()
 
     class Meta:
         db_table = 'product'

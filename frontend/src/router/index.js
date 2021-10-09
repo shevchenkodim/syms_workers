@@ -35,6 +35,7 @@ const routes = [
     beforeEnter: requireAuthenticated
   },
   {
+    props: true,
     path: '/category/:category_code',
     name: 'Category',
     meta: { layout: 'main' },
@@ -42,6 +43,7 @@ const routes = [
     beforeEnter: requireAuthenticated
   },
   {
+    props: true,
     path: '/product/:product_code',
     name: 'Product',
     meta: { layout: 'main' },

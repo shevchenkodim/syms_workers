@@ -2,7 +2,7 @@ from django.urls import path
 from rest_framework import routers
 from api.view_modules.auth.base_auth import BaseAuth
 from api.view_modules.frontend.users import UserViewSet
-from api.view_modules.frontend.products import NoveltiesViewSet
+from api.view_modules.frontend.products import NoveltiesViewSet, ProductsViewSet
 from api.view_modules.auth.simple_jwt_view import Verify, Refresh
 from api.view_modules.frontend.categories import CategoriesViewSet
 from api.view_modules.frontend.main_slider import MainSliderImagesViewSet
@@ -11,6 +11,7 @@ router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, basename='users')
 router.register(r'novelties', NoveltiesViewSet, basename='novelties')
 router.register(r'categories', CategoriesViewSet, basename='categories')
+router.register(r'products', ProductsViewSet, basename='products')
 router.register(r'slider/main/images', MainSliderImagesViewSet, basename='sliders')
 
 urlpatterns = [

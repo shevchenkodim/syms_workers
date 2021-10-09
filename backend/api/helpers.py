@@ -13,3 +13,12 @@ def json_response(success, response, status=HTTP_200_OK):
         'success': success,
         'response': response
     }, status=status)
+
+
+def validate_price(val, default=0):
+    """ Validate any price """
+    try:
+        return int(val)
+    except Exception as e:
+        print(e.__str__())
+        return default

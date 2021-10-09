@@ -43,13 +43,13 @@
       <div class="pt-2 pb-2 subtitle-1 d-flex justify-space-between">
         <b style="color: black;">
           <strike>
-            {{product.price}} грн.
+            {{product.old_price}} грн.
           </strike>
         </b>
         <b class="text-muted"
            style="color: red;"
         >
-          {{product.old_price}} грн.
+          {{product.price}} грн.
         </b>
       </div>
 

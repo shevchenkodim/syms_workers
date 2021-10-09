@@ -15,10 +15,10 @@
         :key="product.product_id"
         cols="3"
       >
-        <NoveltyProduct
+        <Product
           :mainPath="getBackendUrl"
           :product="product"
-        ></NoveltyProduct>
+        ></Product>
       </v-col>
     </v-row>
   </v-container>
@@ -26,12 +26,12 @@
 
 <script>
 import Carousel from '@/components/ThirdParty/Carousel'
-import NoveltyProduct from '@/components/Products/NoveltyProduct'
+import Product from '@/components/Products/Product'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'HomeComponent',
-  components: { Carousel, NoveltyProduct },
+  components: { Carousel, Product },
   computed: {
     ...mapGetters('home', ['isHomeLoading', 'getMainSliderImages', 'getBackendUrl']),
     ...mapGetters({

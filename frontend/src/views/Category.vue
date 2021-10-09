@@ -1,6 +1,6 @@
 <template>
   <div class="category">
-    <CategoryComponent />
+    <CategoryComponent :category_code="this.category_code" />
   </div>
 </template>
 
@@ -12,7 +12,8 @@ export default {
   props: ['category_code'],
   components: {
     CategoryComponent
-  }
+  },
+  watch: {}
 }
 </script>
 

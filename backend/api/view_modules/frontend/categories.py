@@ -22,6 +22,6 @@ class CategoriesViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         queryset = CategoryModel.objects.filter(is_active=True)
-        slider = get_object_or_404(queryset, pk=pk)
+        slider = get_object_or_404(queryset, code_name=pk)
         serializer = CategoryModelSerializer(slider)
         return Response(serializer.data)
