@@ -53,15 +53,23 @@
         </b>
       </div>
 
-      <v-chip
-        :class="{'green': product.is_available, 'danger': !product.is_available}"
-        dark
-      >
-        <v-icon>
-          mdi-check-bold
-        </v-icon>
-        {{ product.is_available ? 'Є в наявності' : 'Немає' }}
-      </v-chip>
+      <div class="d-flex justify-space-between">
+        <v-chip
+          :class="{'green': product.is_available, 'danger': !product.is_available}"
+          dark
+        >
+          <v-icon>
+            mdi-check-bold
+          </v-icon>
+          {{ product.is_available ? 'Є в наявності' : 'Немає' }}
+        </v-chip>
+        <v-btn icon>
+          <v-icon>mdi-heart-outline</v-icon>
+        </v-btn>
+        <v-btn icon>
+          <v-icon>mdi-cart-outline</v-icon>
+        </v-btn>
+      </div>
     </v-card-text>
   </v-card>
 </template>
