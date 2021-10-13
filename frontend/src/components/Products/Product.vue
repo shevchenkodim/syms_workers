@@ -18,7 +18,12 @@
     ></v-img>
 
     <v-card-title>
-      {{product.name}}
+      <router-link
+        :to="{ path: `/product/${product.code}`}"
+        style="text-decoration: none; color: black;"
+      >
+        {{product.name}}
+      </router-link>
     </v-card-title>
 
     <v-card-text>
