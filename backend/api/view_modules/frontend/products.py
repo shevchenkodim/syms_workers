@@ -47,8 +47,8 @@ class NoveltiesViewSet(viewsets.ViewSet):
 
 class ProductsViewSet(viewsets.ViewSet):
     """ ViewSet for viewing products. """
-    # authentication_classes = [JWTAuthentication]
-    # permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
     def retrieve(self, request, pk=None):
         queryset = Product.objects.all()

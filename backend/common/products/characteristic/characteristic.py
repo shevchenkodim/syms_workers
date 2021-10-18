@@ -59,9 +59,9 @@ class CharacteristicProduct(models.Model):
         for character in characteristic_prod:
             characteristic_obj = dict()
             characteristic_obj['attribute'] = CharacteristicHandbookDict.objects.get(id=character).value
-            characteristic_obj['values'] = CharacteristicProduct.objects.filter(
+            characteristic_obj['values'] = [{'value': n, 'unit': v} for n, v in CharacteristicProduct.objects.filter(
                 product__product_id=product_id,
                 attribute=character
-            ).values_list('value__name', flat=True)
+            ).values_list('value__name', 'value__unit__value')]
             characteristic_list.append(characteristic_obj)
         return characteristic_list

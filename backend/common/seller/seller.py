@@ -1,4 +1,6 @@
 from django.db import models
+
+from common.dictionaries.dictionaries import DictDeliveryMethods, DictGuarantee, DictPaymentMethods
 from common.seo.seo import SeoModel
 
 
@@ -21,3 +23,42 @@ class SellerModel(SeoModel):
 
     def __str__(self):
         return self.name
+
+
+class SellerDeliveryMethods(models.Model):
+    """ Seller delivery """
+    seller = models.ForeignKey(SellerModel, on_delete=models.CASCADE)
+    delivery_methods = models.ForeignKey(DictDeliveryMethods, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'seller_delivery_methods'
+        ordering = ['pk']
+
+    def __str__(self):
+        return self.pk.__str__()
+
+
+class SellerGuarantee(models.Model):
+    """ Seller guarantee """
+    seller = models.ForeignKey(SellerModel, on_delete=models.CASCADE)
+    guarantee = models.ForeignKey(DictGuarantee, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'seller_guarantee'
+        ordering = ['pk']
+
+    def __str__(self):
+        return self.pk.__str__()
+
+
+class SellerPaymentMethods(models.Model):
+    """ Seller payment methods """
+    seller = models.ForeignKey(SellerModel, on_delete=models.CASCADE)
+    payment_methods = models.ForeignKey(DictPaymentMethods, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'seller_payment_methods'
+        ordering = ['pk']
+
+    def __str__(self):
+        return self.pk.__str__()

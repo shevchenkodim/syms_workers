@@ -11,3 +11,6 @@ class Dictionaries(models.Model):
 
     def __str__(self):
         return f'{self.value} [{self.code}]'
+
+    def do_json(self):
+        return {'id': self.id, 'code': self.code, 'value': self.value}
