@@ -46,14 +46,12 @@
       </v-row>
 
       <div class="pt-2 pb-2 subtitle-1 d-flex justify-space-between">
-        <b style="color: black;">
+        <b class="black--text" v-if="product.old_price">
           <strike>
             {{product.old_price}} грн.
           </strike>
         </b>
-        <b class="text-muted"
-           style="color: red;"
-        >
+        <b :class="{'red--text': product.old_price, 'black--text': !product.old_price}">
           {{product.price}} грн.
         </b>
       </div>

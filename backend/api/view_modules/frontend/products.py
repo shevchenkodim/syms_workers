@@ -1,9 +1,14 @@
+from rest_framework.generics import get_object_or_404
+
 from api.helpers import validate_price
 from rest_framework.response import Response
 from rest_framework import viewsets, permissions
+
+from common.products.characteristic.characteristic import CharacteristicProduct
 from common.products.product.product import Product
 from rest_framework.pagination import LimitOffsetPagination
 from common.products.comments.comments import ProductComment
+from common.products.product.product_description import ProductDescription
 from common.products.product.product_image import ProductImage
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from common.serializers.product_serializers import ProductModelSerializer
@@ -42,8 +47,24 @@ class NoveltiesViewSet(viewsets.ViewSet):
 
 class ProductsViewSet(viewsets.ViewSet):
     """ ViewSet for viewing products. """
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [permissions.IsAuthenticated]
+
+    def retrieve(self, request, pk=None):
+        queryset = Product.objects.all()
+        product_db = get_object_or_404(queryset, code=pk)
+        serializer = ProductModelSerializer(product_db)
+
+        return Response({
+            **serializer.data,
+            'image_height': 350,
+            'is_available': product_db.is_available_product,
+            'comment_count': ProductComment.get_comment_count(product_db),
+            'images': ProductImage.get_images_by_product(product_db.product_id),
+            'average_star_rating': ProductComment.get_average_star_rating(product_db),
+            'product_descriptions': ProductDescription.get_description_by_product(product_db.product_id),
+            'characteristic_list': CharacteristicProduct.get_characteristic_by_product(product_db.product_id)
+        })
 
     def list(self, request):
         qs_serializer = []

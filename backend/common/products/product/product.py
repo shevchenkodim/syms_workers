@@ -18,7 +18,7 @@ class Product(SeoModel):
     product_id = models.CharField(max_length=55, unique=True, db_index=True, verbose_name='product_id')
     is_available = models.BooleanField(default=True, verbose_name='Available')
     price = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Price')
-    old_price = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Old price')
+    old_price = models.DecimalField(max_digits=15, decimal_places=2, null=True, verbose_name='Old price')
     is_active = models.BooleanField(default=True, verbose_name='Is active')
     quantity = models.IntegerField(default=0, verbose_name='Quantity')
     description = models.TextField(verbose_name='Description')
