@@ -10,84 +10,49 @@
           <v-row class="d-flex justify-center">
             <v-col cols="12">
               <Carousel
-                :items-images="productImages"
-                :media_url="mediaBase"
-                :height="600"
+                :items-images="productDetail.images"
+                :media_url="getBackendUrl"
+                :height="productDetail.image_height"
               ></Carousel>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12">
               <h2>Короткі характеристики</h2>
-              <p>
-                Экран (6.1", OLED (Super Retina XDR), 2532x1170) /
-                Apple A15 Bionic / тройная основная камера: 12 Мп + 12 Мп + 12 Мп,
-                фронтальная камера: 12 Мп / 1 ТБ встроенной памяти / 3G / LTE / 5G / GPS / Nano-SIM / iOS 15
-              </p>
+              <p>{{ productDetail.short_character }}</p>
             </v-col>
             <v-col cols="12">
               <h2>Опис товару</h2>
             </v-col>
-            <v-col cols="12" class="pt-0">
-              <h3>Потрясающий экран и плавный просмотр контента</h3>
-              <p>
-                Насладитесь детальным изображением на Super AMOLED 6.4'' Infinity-U экране с разрешением FHD+ и
-                яркостью до 800 нит, которое отлично видно даже при ярком дневном свете. Функция защиты глаз Eye
-                Comfort Shield снижает уровень синего свечения, а сверхплавная прокрутка обеспечивает комфортный
-                просмотр во время игрового сеанса или скроллинга изображения на экране.
-              </p>
-            </v-col>
-            <v-col cols="12" class="pt-0">
-              <h3>Минималистичный и элегантный дизайн</h3>
-              <p>
-                Galaxy A32 отлично выглядит и его комфортно держать в руке.
-                Необычный дизайн камеры и блестящая текстура задней панели выделяют этот смартфон среди других.
-                Смартфон выполнен в трех цветах: черный, лавандовый и синий.
-              </p>
-            </v-col>
-            <v-col cols="12" class="pt-0">
-              <h3>Потрясающая камера</h3>
-              <p>
-                Четыре AI камеры Galaxy A32 поднимают уровень качества фото на новую высоту.
-                Делайте сверхчёткие снимки на 64 мегапиксельную основную камеру.
-                Расширьте поле зрения камеры с помощью сверхширокоугольной камеры.
-                Управляйте резкостью камеры с датчиком глубины или снимите детали объекта съемки с помощью макрокамеры.
-              </p>
+            <v-col
+              cols="12"
+              class="pt-0"
+              v-for="(block, index) in productDetail.product_descriptions"
+              :key="index"
+            >
+              <h3>{{ block.title }}</h3>
+              <p>{{ block.description }}</p>
             </v-col>
             <v-col cols="12">
               <h2>Характеристики</h2>
               <v-list dense light>
                 <v-list-item-group>
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title class="d-flex justify-space-between">
-                        <span>Разрешение дисплея</span>
-                        <span>2400 x 1080</span>
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
+                  <template v-for="(character, index) in productDetail.characteristic_list">
+                    <v-list-item :key="index">
+                      <v-list-item-content>
+                        <v-list-item-title class="d-flex justify-space-between">
+                          <span>{{ character.attribute }}</span>
+                          <span>
+                            <span v-for="(char, index) in character.values" :key="index">
+                              {{ char.value }} {{ char.unit }}
+                            </span>
+                          </span>
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
 
-                  <v-divider></v-divider>
-
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title class="d-flex justify-space-between">
-                        <span>Оперативная память</span>
-                        <span>4 ГБ</span>
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-
-                  <v-divider></v-divider>
-
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title class="d-flex justify-space-between">
-                        <span>Встроенная память</span>
-                        <span>64 ГБ</span>
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
+                    <v-divider :key="index"></v-divider>
+                  </template>
                 </v-list-item-group>
               </v-list>
             </v-col>
@@ -161,11 +126,11 @@
         <v-col cols="6">
           <v-row>
             <v-col cols="12">
-              <h4>Код: 0000000001</h4>
+              <h4>Код: {{ productDetail.product_id }}</h4>
             </v-col>
             <v-col cols="12 pt-0 pb-0 d-flex justify-content-start align-items-center">
               <v-rating
-                :value="3"
+                :value="productDetail.average_star_rating"
                 color="amber"
                 dense
                 half-increments
@@ -173,32 +138,30 @@
                 size="20"
               ></v-rating>
               <div class="grey--text ml-4">
-                8 відгуків
+                {{ productDetail.comment_count }} відгуків
               </div>
             </v-col>
             <v-col cols="12">
               <v-chip
-                class="green"
+                :class="{'green': productDetail.is_available, 'danger': !productDetail.is_available}"
                 dark
               >
                 <v-icon>
                   mdi-check-bold
                 </v-icon>
-                Є в наявності
+                {{ productDetail.is_available ? 'Є в наявності' : 'Немає' }}
               </v-chip>
             </v-col>
             <v-col cols="12">
               <v-row>
                 <v-col cols="6">
-                  <b style="color: black;">
+                  <b class="black--text" v-if="productDetail.old_price">
                     <strike>
-                      19500 грн.
+                      {{productDetail.old_price}} грн.
                     </strike>
                   </b>
-                  <b class="text-muted"
-                     style="color: red;"
-                  >
-                    <h3>18500 грн.</h3>
+                  <b :class="{'red--text': productDetail.old_price, 'black--text': !productDetail.old_price}">
+                    <h3>{{productDetail.price}} грн.</h3>
                   </b>
                 </v-col>
                 <v-col cols="6" class="d-flex align-center justify-center">
@@ -220,7 +183,7 @@
                   class="grey darken-4"
                 ></v-img>
                 <v-card-title class="text-h6 d-flex justify-center">
-                  Інтернет-магазин "Active life"
+                  Інтернет-магазин "{{ sellerDetail.name }}"
                 </v-card-title>
                 <v-card-text class="white mb-0 pb-0">
                   <v-list dense light>
@@ -242,7 +205,7 @@
                         </v-list-item-icon>
                         <v-list-item-content>
                           <v-list-item-title>
-                            Місце знаходження: м.Київ, Зочих 28
+                            Місце знаходження: {{ sellerDetail.address }}
                           </v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>
@@ -253,7 +216,7 @@
                         </v-list-item-icon>
                         <v-list-item-content>
                           <v-list-item-title>
-                            +380000000000
+                            {{ sellerDetail.phone }}
                           </v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>
@@ -264,7 +227,7 @@
                         </v-list-item-icon>
                         <v-list-item-content>
                           <v-list-item-title>
-                            activelife@gmail.com
+                            {{ sellerDetail.email }}
                           </v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>
@@ -273,148 +236,31 @@
                 </v-card-text>
               </v-card>
             </v-col>
-            <v-col cols="12">
-              <v-card class="green" dark>
+            <v-col
+              cols="12"
+              v-for="(block, index) in sellerDetail.blocks"
+              :key="index"
+            >
+              <v-card :class="block.bg_class" dark>
                 <v-card-title class="text-h6">
-                  Доступні способи доставки
+                  {{ block.title }}
                 </v-card-title>
                 <v-card-text class="white mb-0 pb-0">
                   <v-list dense light>
                     <v-list-item-group>
-                      <v-list-item>
+                      <v-list-item
+                        v-for="(item, index) in block.items"
+                        :key="index"
+                      >
                         <v-list-item-icon>
-                          <v-icon>mdi-hoop-house</v-icon>
+                          <v-icon>{{ item.icons }}</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
                           <v-list-item-title>
-                            Самовивіз з магазину
+                            {{ item.value }}
                           </v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>
-
-                      <v-list-item>
-                        <v-list-item-icon>
-                          <v-icon>mdi-map-marker-distance</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Самовивіз з Нової Пошти
-                          </v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-
-                      <v-list-item>
-                        <v-list-item-icon>
-                          <v-icon>mdi-google-maps</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Самовивіз з УкрПошти
-                          </v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-
-                      <v-list-item>
-                        <v-list-item-icon>
-                          <v-icon>mdi-shopping-outline</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Самовивіз з Justin
-                          </v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-
-                      <v-list-item>
-                        <v-list-item-icon>
-                          <v-icon>mdi-truck-delivery-outline</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Доставка від продавця
-                          </v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-list-item-group>
-                  </v-list>
-                </v-card-text>
-              </v-card>
-            </v-col>
-            <v-col cols="12">
-              <v-card class="warning" dark>
-                <v-card-title class="text-h6">
-                  Гарантія
-                </v-card-title>
-                <v-card-text class="white mb-0 pb-0">
-                  <v-list dense light>
-                    <v-list-item-group>
-                      <v-list-item>
-                        <v-list-item-icon>
-                          <v-icon>mdi-security</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            12 місяців
-                          </v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-
-                      <v-list-item>
-                        <v-list-item-icon>
-                          <v-icon>mdi-update</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Обмін/повернення товару впродовж 14 днів
-                          </v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-list-item-group>
-                  </v-list>
-                </v-card-text>
-              </v-card>
-            </v-col>
-            <v-col cols="12">
-              <v-card class="info" dark>
-                <v-card-title class="text-h6">
-                  Способи оплати
-                </v-card-title>
-                <v-card-text class="white mb-0 pb-0">
-                  <v-list dense light>
-                    <v-list-item-group>
-                      <v-list-item>
-                        <v-list-item-icon>
-                          <v-icon>mdi-cash</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Готівкою
-                          </v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-
-                      <v-list-item>
-                        <v-list-item-icon>
-                          <v-icon>mdi-credit-card-multiple</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Оплата картою Visa
-                          </v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-
-                      <v-list-item>
-                        <v-list-item-icon>
-                          <v-icon>mdi-credit-card-multiple-outline</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Оплата картою MasterCard
-                          </v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-
                     </v-list-item-group>
                   </v-list>
                 </v-card-text>
@@ -428,19 +274,30 @@
 
 <script>
 import Carousel from '@/components/ThirdParty/Carousel'
+import { mapGetters } from 'vuex'
 export default {
   name: 'ProductComponent',
   components: { Carousel },
   props: ['product_code'],
-  data: () => ({
-    mediaBase: 'https://content1.rozetka.com.ua/',
-    productImages: [
-      { item_image: 'goods/images/big/221250977.jpg' },
-      { item_image: 'goods/images/big/221250974.jpg' },
-      { item_image: 'goods/images/big/221022193.jpg' },
-      { item_image: 'goods/images/big/221250972.jpg' }
-    ]
-  })
+  computed: {
+    ...mapGetters('product', ['getBackendUrl']),
+    ...mapGetters({
+      productDetail: 'product/getProductData',
+      sellerDetail: 'product/getSellerData'
+    })
+  },
+  data: () => ({}),
+  methods: {
+    doInit () {
+      this.doLoadProductDetail()
+    },
+    doLoadProductDetail () {
+      this.$store.dispatch('product/loadProductData', this.product_code)
+    }
+  },
+  mounted () {
+    this.doInit()
+  }
 }
 </script>
 

@@ -12,5 +12,11 @@ export default {
       `${process.env.VUE_APP_BACKEND_API_URL}/products?${category ? `category_id=${category}&` : ''}limit=${limit}
       &offset=${offset}&price_from=${priceFrom}&price_to=${priceTo}&brand=${brand}&ordering=${ordering}`,
       setAuthHeader())
+  },
+  getProductByCode (code = '') {
+    return session.get(`${process.env.VUE_APP_BACKEND_API_URL}/products/${code}`, setAuthHeader())
+  },
+  getSellerByCode (code = '') {
+    return session.get(`${process.env.VUE_APP_BACKEND_API_URL}/sellers/${code}`, setAuthHeader())
   }
 }

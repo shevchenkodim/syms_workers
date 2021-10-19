@@ -4,6 +4,7 @@ import auth from '@/store/auth'
 import user from '@/store/user'
 import home from '@/store/home'
 import common from '@/store/common'
+import product from '@/store/product'
 import category from '@/store/category'
 import createLogger from 'vuex/dist/logger'
 
@@ -20,7 +21,8 @@ export default new Vuex.Store({
     user,
     home,
     common,
-    category
+    category,
+    product
   },
   strict: debug,
   plugins: debug ? [createLogger()] : []

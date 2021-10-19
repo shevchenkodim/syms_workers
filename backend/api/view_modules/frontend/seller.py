@@ -17,7 +17,21 @@ class SellerViewSet(viewsets.ViewSet):
         serializer = SellerModelSerializer(s_db)
         return Response({
             **serializer.data,
-            "guarantees": [x.guarantee.do_json() for x in SellerGuarantee.objects.filter(seller=s_db)],
-            "payment_methods": [x.payment_methods.do_json() for x in SellerPaymentMethods.objects.filter(seller=s_db)],
-            "delivery_methods": [x.delivery_methods.do_json() for x in SellerDeliveryMethods.objects.filter(seller=s_db)],
+            "blocks": [
+                {
+                    "title": "Способи оплати",
+                    "bg_class": "green",
+                    "items": [x.payment_methods.do_json() for x in SellerPaymentMethods.objects.filter(seller=s_db)],
+                },
+                {
+                    "title": "Гарантія",
+                    "bg_class": "warning",
+                    "items": [x.guarantee.do_json() for x in SellerGuarantee.objects.filter(seller=s_db)],
+                },
+                {
+                    "title": "Доступні способи доставки",
+                    "bg_class": "info",
+                    "items": [x.delivery_methods.do_json() for x in SellerDeliveryMethods.objects.filter(seller=s_db)],
+                }
+            ]
         })
