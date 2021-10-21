@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import auth from '@/store/auth'
 import user from '@/store/user'
 import home from '@/store/home'
+import cart from '@/store/cart'
 import common from '@/store/common'
 import product from '@/store/product'
 import category from '@/store/category'
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     auth,
     user,
     home,
+    cart,
     common,
     category,
     product

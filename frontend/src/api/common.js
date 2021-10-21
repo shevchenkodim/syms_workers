@@ -18,5 +18,8 @@ export default {
   },
   getSellerByCode (code = '') {
     return session.get(`${process.env.VUE_APP_BACKEND_API_URL}/sellers/${code}`, setAuthHeader())
+  },
+  getCartDetail () {
+    return session.get(`${process.env.VUE_APP_BACKEND_API_URL}/carts/`, setAuthHeader())
   }
 }

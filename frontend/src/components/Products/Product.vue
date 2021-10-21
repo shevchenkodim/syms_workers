@@ -66,10 +66,17 @@
           </v-icon>
           {{ product.is_available ? 'Є в наявності' : 'Немає' }}
         </v-chip>
-        <v-btn icon>
+        <v-btn
+          icon
+          v-if="!product.exists_in_favorites"
+        >
           <v-icon>mdi-heart-outline</v-icon>
         </v-btn>
-        <v-btn icon>
+        <v-btn
+          icon
+          v-if="!product.exists_in_cart"
+          @click="doAddCartItem(product.id)"
+        >
           <v-icon>mdi-cart-outline</v-icon>
         </v-btn>
       </div>
@@ -89,6 +96,11 @@ export default {
     mainPath: {
       type: String,
       default: ''
+    }
+  },
+  methods: {
+    doAddCartItem (prodId) {
+      console.log('Add cart item => prodId:', prodId)
     }
   }
 }

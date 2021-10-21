@@ -42,6 +42,7 @@ export default {
   mounted: function () {
     this.$store.dispatch('home/loadMainSliderImages')
     this.$store.dispatch('home/loadNoveltyProducts')
+    this.$store.dispatch('cart/loadCartItems')
   }
 }
 </script>

@@ -28,7 +28,7 @@
               cols="12"
               class="pt-0"
               v-for="(block, index) in productDetail.product_descriptions"
-              :key="index"
+              :key="index + '_block_description'"
             >
               <h3>{{ block.title }}</h3>
               <p>{{ block.description }}</p>
@@ -38,7 +38,7 @@
               <v-list dense light>
                 <v-list-item-group>
                   <template v-for="(character, index) in productDetail.characteristic_list">
-                    <v-list-item :key="index">
+                    <v-list-item :key="index + 1 + '_block_character'">
                       <v-list-item-content>
                         <v-list-item-title class="d-flex justify-space-between">
                           <span>{{ character.attribute }}</span>
@@ -51,7 +51,7 @@
                       </v-list-item-content>
                     </v-list-item>
 
-                    <v-divider :key="index"></v-divider>
+                    <v-divider :key="index + 1 + '_d_block_character'"></v-divider>
                   </template>
                 </v-list-item-group>
               </v-list>
@@ -64,9 +64,9 @@
             <v-col cols="12">
               <v-list three-line>
                 <template v-for="(v, i) in [1, 2, 3]">
-                  <v-divider :key="i"></v-divider>
+                  <v-divider :key="i + '_comment'"></v-divider>
 
-                  <v-subheader :key="i">
+                  <v-subheader :key="i + '_s_comment'">
                     <v-row>
                       <v-col cols="12" class="d-flex justify-space-between pb-0 pt-0">
                         <span><b>Dmytro Shevchenko</b></span>
@@ -165,9 +165,23 @@
                   </b>
                 </v-col>
                 <v-col cols="6" class="d-flex align-center justify-center">
-                  <v-btn class="green" dark>
+                  <v-btn
+                    @click="doAddCartItem(productDetail.id)"
+                    v-if="!productDetail.exists_in_cart"
+                    class="green"
+                    dark
+                  >
                     <v-icon>mdi-cart-outline</v-icon>
                     Купити
+                  </v-btn>
+                  <v-btn
+                    v-else
+                    class="green"
+                    dark
+                    @click="doGoToCart"
+                  >
+                    <v-icon>mdi-cart-outline</v-icon>
+                    Оформити
                   </v-btn>
                   <v-btn icon class="ml-5">
                     <v-icon>mdi-heart-outline</v-icon>
@@ -293,10 +307,17 @@ export default {
     },
     doLoadProductDetail () {
       this.$store.dispatch('product/loadProductData', this.product_code)
+    },
+    doGoToCart () {
+      window.location.replace('/cart')
+    },
+    doAddCartItem (prodId) {
+      console.log('Add cart item => prodId:', prodId)
     }
   },
   mounted () {
     this.doInit()
+    this.$store.dispatch('cart/loadCartItems')
   }
 }
 </script>

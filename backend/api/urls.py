@@ -1,6 +1,7 @@
 from django.urls import path
 from rest_framework import routers
 from api.view_modules.auth.base_auth import BaseAuth
+from api.view_modules.frontend.cart import CartViewSet
 from api.view_modules.frontend.users import UserViewSet
 from api.view_modules.frontend.seller import SellerViewSet
 from api.view_modules.auth.simple_jwt_view import Verify, Refresh
@@ -10,6 +11,7 @@ from api.view_modules.frontend.products import NoveltiesViewSet, ProductsViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, basename='users')
+router.register(r'carts', CartViewSet, basename='cart')
 router.register(r'novelties', NoveltiesViewSet, basename='novelties')
 router.register(r'categories', CategoriesViewSet, basename='categories')
 router.register(r'products', ProductsViewSet, basename='products')

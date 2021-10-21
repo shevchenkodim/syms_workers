@@ -51,6 +51,14 @@ const routes = [
     beforeEnter: requireAuthenticated
   },
   {
+    props: true,
+    path: '/cart',
+    name: 'Cart',
+    meta: { layout: 'main' },
+    component: () => import('../views/Cart.vue'),
+    beforeEnter: requireAuthenticated
+  },
+  {
     path: '/login',
     name: 'Login',
     meta: { layout: 'auth' },

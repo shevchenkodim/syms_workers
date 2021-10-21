@@ -4,6 +4,7 @@ from api.helpers import validate_price
 from rest_framework.response import Response
 from rest_framework import viewsets, permissions
 
+from common.cart.cart_item import CartItems
 from common.products.characteristic.characteristic import CharacteristicProduct
 from common.products.product.product import Product
 from rest_framework.pagination import LimitOffsetPagination
@@ -40,7 +41,9 @@ class NoveltiesViewSet(viewsets.ViewSet):
                 'image_height': 350,
                 'is_available': p.is_available_product,
                 'comment_count': ProductComment.get_comment_count(p),
-                'average_star_rating': ProductComment.get_average_star_rating(p)
+                'average_star_rating': ProductComment.get_average_star_rating(p),
+                'exists_in_cart': CartItems.objects.filter(client=request.user, product=p).exists(),
+                'exists_in_favorites': False
             })
         return Response(qs_serializer)
 
@@ -58,13 +61,15 @@ class ProductsViewSet(viewsets.ViewSet):
         return Response({
             **serializer.data,
             'image_height': 700,
+            'exists_in_favorites': False,
             'seller_code': product_db.seller.code_name,
             'is_available': product_db.is_available_product,
             'comment_count': ProductComment.get_comment_count(product_db),
             'images': [{"item_image": x["url"]} for x in ProductImage.get_images_by_product(product_db.product_id)],
             'average_star_rating': ProductComment.get_average_star_rating(product_db),
             'product_descriptions': ProductDescription.get_description_by_product(product_db.product_id),
-            'characteristic_list': CharacteristicProduct.get_characteristic_by_product(product_db.product_id)
+            'characteristic_list': CharacteristicProduct.get_characteristic_by_product(product_db.product_id),
+            'exists_in_cart': CartItems.objects.filter(client=request.user, product=product_db).exists()
         })
 
     def list(self, request):
@@ -106,6 +111,8 @@ class ProductsViewSet(viewsets.ViewSet):
                 'image_height': 350,
                 'is_available': p.is_available_product,
                 'comment_count': ProductComment.get_comment_count(p),
-                'average_star_rating': ProductComment.get_average_star_rating(p)
+                'average_star_rating': ProductComment.get_average_star_rating(p),
+                'exists_in_cart': CartItems.objects.filter(client=request.user, product=p).exists(),
+                'exists_in_favorites': False
             })
         return Response({"rows": qs_serializer, "params": {"count": pag_count}})

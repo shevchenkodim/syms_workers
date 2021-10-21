@@ -37,6 +37,7 @@
                     outlined
                     clearable
                     hide-details="auto"
+                    :class="{'is-invalid': filters.priceTo < 1}"
                     v-model="filters.priceTo"
                   ></v-text-field>
                 </v-col>
@@ -161,7 +162,6 @@ export default {
         ...{ priceFrom: this.filters.priceFrom, priceTo: this.filters.priceTo, ordering: this.sortByItem, brand: this.producerItem }
       })
         .then(({ data }) => {
-          console.log(data)
           this.$store.commit('category/setCategoryProducts', data.rows)
           this.pagination.count = data.params.count
         })
@@ -177,6 +177,7 @@ export default {
   },
   mounted () {
     this.doInit()
+    this.$store.dispatch('cart/loadCartItems')
   },
   watch: {
     category_code: function (val) {

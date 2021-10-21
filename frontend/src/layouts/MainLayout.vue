@@ -102,8 +102,16 @@
 <!--          </v-card>-->
 <!--        </v-menu>-->
 
-        <v-btn icon>
+        <v-btn
+          icon
+          @click="do_go_to_cart"
+        >
           <v-icon>mdi-cart-outline</v-icon>
+          <span v-if="cartItemsCount > 0"
+                class="green--text"
+          >
+            {{ cartItemsCount }}
+          </span>
         </v-btn>
 
         <v-menu
@@ -161,10 +169,12 @@
 
             <v-list>
               <v-list-item>
-                <v-list-item-action>
+                <v-list-item-action @click="do_go_to_cart">
                   <v-icon>mdi-cart-outline</v-icon>
                 </v-list-item-action>
-                <v-list-item-title>Кошик</v-list-item-title>
+                <v-list-item-title @click="do_go_to_cart">
+                  Кошик ({{ cartItemsCount }})
+                </v-list-item-title>
               </v-list-item>
 
               <v-list-item>
@@ -401,7 +411,8 @@ export default {
       isAuthenticated: 'auth/isAuthenticated',
       allCategories: 'common/getAllCategories',
       userData: 'user/getUserData',
-      backendUrl: 'home/getBackendUrl'
+      backendUrl: 'home/getBackendUrl',
+      cartItemsCount: 'cart/getCartCount'
     })
   },
   data: () => ({
@@ -436,6 +447,10 @@ export default {
     logout () {
       this.$store.dispatch('auth/logout')
       this.$router.push({ name: 'Login' })
+    },
+    do_go_to_cart () {
+      window.location.replace('/cart')
+      // this.$router.push({ name: 'Cart' })
     }
   },
   created () {

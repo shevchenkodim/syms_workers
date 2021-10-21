@@ -1,6 +1,9 @@
 from django.db import models
 from django.conf import settings
 from common.products.product.product import Product
+from common.seller.seller import SellerDeliveryMethods
+from common.dictionaries.dictionaries import DictDeliveryMethods
+from common.serializers.product_serializers import ProductModelSerializer
 
 
 class CartItems(models.Model):
@@ -8,6 +11,7 @@ class CartItems(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Product')
     client = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Client')
     count = models.IntegerField(default=1, verbose_name='Count')
+    delivery_method = models.ForeignKey(DictDeliveryMethods, default=1, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Date created')
 
     def __str__(self):
@@ -15,9 +19,16 @@ class CartItems(models.Model):
 
     def get_item_json(self) -> dict:
         return {
+            'id': self.id,
             'quantity': self.count,
-            'product_id': self.product.product_id,
-            'price': self.product.price.__str__()
+            'price': self.product.price.__str__(),
+            'product': ProductModelSerializer(self.product).data,
+            'seller_code': self.product.seller.code_name,
+            'delivery_method': self.delivery_method.id,
+            'delivery_methods': [{
+                'id': x.id,
+                'value': x.delivery_methods.value
+            } for x in SellerDeliveryMethods.objects.filter(seller=self.product.seller)]
         }
 
     @staticmethod
