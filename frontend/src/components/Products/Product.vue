@@ -75,7 +75,7 @@
         <v-btn
           icon
           v-if="!product.exists_in_cart"
-          @click="doAddCartItem(product.id)"
+          @click="doAddCartItem()"
         >
           <v-icon>mdi-cart-outline</v-icon>
         </v-btn>
@@ -99,8 +99,15 @@ export default {
     }
   },
   methods: {
-    doAddCartItem (prodId) {
-      console.log('Add cart item => prodId:', prodId)
+    doAddCartItem () {
+      this.$store.dispatch('cart/doAddCartItemPromise', { product_id: this.product.product_id })
+        .then(resp => {
+          if (resp.status === 201) {
+            this.$store.dispatch('cart/loadCartItems')
+            this.$store.commit('home/setIsExistsCartItem', { product_id: this.product.product_id, value: true })
+            this.$forceUpdate()
+          }
+        })
     }
   }
 }

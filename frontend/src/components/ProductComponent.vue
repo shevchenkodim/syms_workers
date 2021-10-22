@@ -183,7 +183,11 @@
                     <v-icon>mdi-cart-outline</v-icon>
                     Оформити
                   </v-btn>
-                  <v-btn icon class="ml-5">
+                  <v-btn
+                    icon
+                    class="ml-5"
+                    @click="doAddCartItem()"
+                  >
                     <v-icon>mdi-heart-outline</v-icon>
                   </v-btn>
                 </v-col>
@@ -311,8 +315,15 @@ export default {
     doGoToCart () {
       window.location.replace('/cart')
     },
-    doAddCartItem (prodId) {
-      console.log('Add cart item => prodId:', prodId)
+    doAddCartItem () {
+      this.$store.dispatch('cart/doAddCartItemPromise', { product_id: this.productDetail.product_id })
+        .then(resp => {
+          if (resp.status === 201) {
+            this.$store.dispatch('cart/loadCartItems')
+            this.$store.commit('product/setIsExistsCartItem', { product_id: this.productDetail.product_id, value: true })
+            this.$forceUpdate()
+          }
+        })
     }
   },
   mounted () {

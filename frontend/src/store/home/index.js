@@ -41,6 +41,12 @@ export default {
     },
     setNoveltyProducts (state, data) {
       state.homeNoveltyProducts = data
+    },
+    setIsExistsCartItem (state, data) {
+      const product = state.homeNoveltyProducts.find(p => p.product_id === data.product_id)
+      if (product) {
+        product.exists_in_cart = data.value
+      }
     }
   },
   actions: {

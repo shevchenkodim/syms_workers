@@ -57,6 +57,9 @@ export default {
     },
     async loadCartItemsPromise ({ commit }) {
       return await common.getCartDetail()
+    },
+    async doAddCartItemPromise ({ commit, dispatch }, data) {
+      return await common.addCartItem(data)
     }
   }
 }

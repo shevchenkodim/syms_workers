@@ -41,6 +41,9 @@ export default {
     },
     setSellerData (state, data) {
       state.sellerData = data
+    },
+    setIsExistsCartItem (state, value) {
+      state.productData.exists_in_cart = value
     }
   },
   actions: {

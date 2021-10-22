@@ -21,5 +21,8 @@ export default {
   },
   getCartDetail () {
     return session.get(`${process.env.VUE_APP_BACKEND_API_URL}/carts/`, setAuthHeader())
+  },
+  addCartItem (data) {
+    return session.post(`${process.env.VUE_APP_BACKEND_API_URL}/carts/`, data, setAuthHeader())
   }
 }
