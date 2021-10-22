@@ -24,5 +24,11 @@ export default {
   },
   addCartItem (data) {
     return session.post(`${process.env.VUE_APP_BACKEND_API_URL}/carts/`, data, setAuthHeader())
+  },
+  removeCartItem (data) {
+    return session.delete(`${process.env.VUE_APP_BACKEND_API_URL}/carts/`, { data: data, ...setAuthHeader() })
+  },
+  saveCartItems (data) {
+    return session.put(`${process.env.VUE_APP_BACKEND_API_URL}/carts/`, data, setAuthHeader())
   }
 }

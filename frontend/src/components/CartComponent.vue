@@ -107,6 +107,10 @@ export default {
     }
   },
   methods: {
+    doInitAll () {
+      this.doLoadCartItems()
+      this.$store.dispatch('cart/loadCartItems')
+    },
     doGetTotalPrice () {
       // eslint-disable-next-line no-return-assign
       this.totalAmount = this.cartItems.reduce((total, item) => total += (item.product.price * item.quantity), 0)
@@ -131,18 +135,27 @@ export default {
         })
     },
     doSaveCartItems () {
-      console.log('Do save order')
+      this.$store.dispatch('cart/doSaveCartItemsPromise', { cart_items: this.cartItems })
+        .then(resp => {
+          if (resp.status === 200) {
+            this.doInitAll()
+          }
+        })
     },
     doCreateOrder () {
       console.log('Do create order')
     },
     doRemoveCartItem (id) {
-      console.log('Do remove item from cart', id)
+      this.$store.dispatch('cart/doRemoveCartItemPromise', { id: id })
+        .then(resp => {
+          if (resp.status === 200) {
+            this.doInitAll()
+          }
+        })
     }
   },
   mounted () {
-    this.doLoadCartItems()
-    this.$store.dispatch('cart/loadCartItems')
+    this.doInitAll()
   }
 }
 </script>

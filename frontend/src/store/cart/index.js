@@ -60,6 +60,12 @@ export default {
     },
     async doAddCartItemPromise ({ commit, dispatch }, data) {
       return await common.addCartItem(data)
+    },
+    async doRemoveCartItemPromise ({ commit, dispatch }, data) {
+      return await common.removeCartItem(data)
+    },
+    async doSaveCartItemsPromise ({ commit, dispatch }, data) {
+      return await common.saveCartItems(data)
     }
   }
 }
