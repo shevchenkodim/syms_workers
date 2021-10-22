@@ -1,3 +1,4 @@
+from common.analytics.product_analytic import ProductAnalytic
 from common.models import User
 from django.contrib import admin
 from common.cart.cart_item import CartItems
@@ -50,3 +51,6 @@ admin.site.register(SellerModel)
 admin.site.register(SellerDeliveryMethods)
 admin.site.register(SellerGuarantee)
 admin.site.register(SellerPaymentMethods)
+
+# Analytics
+admin.site.register(ProductAnalytic)

@@ -4,6 +4,7 @@ from api.helpers import validate_price
 from rest_framework.response import Response
 from rest_framework import viewsets, permissions
 
+from common.analytics.product_analytic import ProductAnalytic
 from common.cart.cart_item import CartItems
 from common.products.characteristic.characteristic import CharacteristicProduct
 from common.products.product.product import Product
@@ -57,6 +58,8 @@ class ProductsViewSet(viewsets.ViewSet):
         queryset = Product.objects.all()
         product_db = get_object_or_404(queryset, code=pk)
         serializer = ProductModelSerializer(product_db)
+
+        ProductAnalytic.do_update(request.user, product_db)
 
         return Response({
             **serializer.data,
