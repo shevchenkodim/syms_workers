@@ -3,8 +3,10 @@ from common.models import User
 from django.contrib import admin
 from common.cart.cart_item import CartItems
 from common.access.access import AccessRole, UserRole
-from common.dictionaries.dictionaries import BrandDict, UnitDict, DictDeliveryMethods, DictGuarantee, DictPaymentMethods
+from common.dictionaries.dictionaries import BrandDict, UnitDict, DictDeliveryMethods, DictGuarantee, \
+    DictPaymentMethods, DictOrderStatus
 from common.frontend.sliders.main_slider import MainCarouselModel
+from common.orders.orders import Order, OrderItems
 from common.products.categories.categories import CategoryModel
 from common.products.characteristic.characteristic import CharacteristicHandbookDict, CharacteristicAttributes, \
     CharacteristicProduct
@@ -33,6 +35,7 @@ admin.site.register(CharacteristicHandbookDict)
 admin.site.register(DictDeliveryMethods)
 admin.site.register(DictGuarantee)
 admin.site.register(DictPaymentMethods)
+admin.site.register(DictOrderStatus)
 
 # Frontend
 admin.site.register(MainCarouselModel)
@@ -54,3 +57,7 @@ admin.site.register(SellerPaymentMethods)
 
 # Analytics
 admin.site.register(ProductAnalytic)
+
+# Orders
+admin.site.register(Order)
+admin.site.register(OrderItems)

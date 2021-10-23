@@ -26,10 +26,10 @@ class Cart(object):
             'items': [x.get_item_json() for x in CartItems.objects.filter(client=request.user)]
         }
 
-    def get_total_price(self, request):
+    def get_total_price(self, user):
         """ Return total price in the cart """
         total = Decimal(0.0)
-        for x in CartItems.objects.filter(client=request.user):
+        for x in CartItems.objects.filter(client=user):
             item = x.get_item_json()
             total += Decimal(item['price']) * item['quantity']
         return total

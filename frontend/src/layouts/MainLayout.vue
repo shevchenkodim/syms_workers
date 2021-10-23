@@ -188,7 +188,64 @@
                 <v-list-item-action>
                   <v-icon>mdi-history</v-icon>
                 </v-list-item-action>
-                <v-list-item-title>Історія замовленнь</v-list-item-title>
+                  <v-list-item-title>
+                    <v-col cols="auto" class="pl-0">
+                      <v-dialog
+                        transition="dialog-top-transition"
+                        max-width="600"
+                        scrollable
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <span
+                            @click="doOpenHistoryOrders"
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            Історія замовленнь
+                          </span>
+                        </template>
+                        <template v-slot:default="dialog">
+                          <v-card>
+                            <v-toolbar
+                              color="primary"
+                              dark
+                            >
+                              Історія замовленнь
+                            </v-toolbar>
+                            <v-card-text style="height: 600px; padding-top: 20px">
+                              <v-row v-for="(h, index) in orderHistory" :key="index + '_hist_ord'">
+                                <v-col cols="1 d-flex align-center justify-center">
+                                  <b>№{{ index + 1 }}</b>
+                                </v-col>
+                                <v-col cols="11">
+                                  <v-row>
+                                    <v-col cols="12 pb-1" class="d-flex justify-space-between">
+                                     <span><b>Сума:</b> {{ h.total_amount }} грн.</span>
+                                     <span><b>Дата:</b> {{ h.created_at }}</span>
+                                    </v-col>
+                                    <v-col cols="12 pt-1">
+                                      <span v-for="(p, ind) in h.products" :key="index + '_y_' + ind">
+                                        {{ p }}
+                                        <span v-if="ind + 1 < h.products.length">, </span>
+                                      </span>
+                                    </v-col>
+                                  </v-row>
+                                </v-col>
+                              </v-row>
+                            </v-card-text>
+                            <v-card-actions class="justify-end">
+                              <v-btn
+                                text
+                                @click="dialog.value = false"
+                              >
+                                Вийти
+                              </v-btn>
+                            </v-card-actions>
+                          </v-card>
+                        </template>
+                      </v-dialog>
+                    </v-col>
+                  </v-list-item-title>
               </v-list-item>
 
               <v-list-item
@@ -437,7 +494,8 @@ export default {
         title: 'Партнери',
         items: ['Kabanchik.ua', 'Вчасно', 'Zakupki.prom.ua']
       }
-    ]
+    ],
+    orderHistory: []
   }),
   methods: {
     doCheckShowSearchInput () {
@@ -451,6 +509,13 @@ export default {
     do_go_to_cart () {
       window.location.replace('/cart')
       // this.$router.push({ name: 'Cart' })
+    },
+    doOpenHistoryOrders () {
+      this.orderHistory = []
+      this.$store.dispatch('common/loadOrderHistory')
+        .then(resp => {
+          this.orderHistory = resp.data
+        })
     }
   },
   created () {

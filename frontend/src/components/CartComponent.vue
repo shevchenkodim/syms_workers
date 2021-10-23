@@ -143,7 +143,12 @@ export default {
         })
     },
     doCreateOrder () {
-      console.log('Do create order')
+      this.$store.dispatch('cart/doCreateOrderPromise')
+        .then(resp => {
+          if (resp.status === 201) {
+            this.doInitAll()
+          }
+        })
     },
     doRemoveCartItem (id) {
       this.$store.dispatch('cart/doRemoveCartItemPromise', { id: id })

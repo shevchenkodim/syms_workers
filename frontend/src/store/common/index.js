@@ -1,4 +1,5 @@
 import common from '@/api/common'
+import order from '@/api/order'
 
 const getDefaultCommonState = () => ({
   commonLoading: false,
@@ -43,6 +44,9 @@ export default {
         .finally(() => {
           commit('initEnd')
         })
+    },
+    async loadOrderHistory ({ commit }) {
+      return await order.loadHistoryOrder()
     }
   }
 }

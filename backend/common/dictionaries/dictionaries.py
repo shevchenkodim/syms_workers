@@ -55,3 +55,11 @@ class DictPaymentMethods(Dictionaries):
 
     def do_json(self):
         return {**super(DictPaymentMethods, self).do_json(), 'icons': self.icon}
+
+
+class DictOrderStatus(Dictionaries):
+    """ Order status dict model """
+
+    class Meta:
+        db_table = 'dict_order_status'
+        ordering = ['value']

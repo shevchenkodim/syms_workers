@@ -1,4 +1,5 @@
 import common from '@/api/common'
+import order from '@/api/order'
 
 const getDefaultCartState = () => ({
   isCartLoading: false,
@@ -66,6 +67,9 @@ export default {
     },
     async doSaveCartItemsPromise ({ commit, dispatch }, data) {
       return await common.saveCartItems(data)
+    },
+    async doCreateOrderPromise ({ commit, dispatch }) {
+      return await order.createOrder()
     }
   }
 }
