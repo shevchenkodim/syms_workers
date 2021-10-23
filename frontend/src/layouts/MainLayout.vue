@@ -19,16 +19,19 @@
 
         <v-spacer></v-spacer>
 
-        <v-text-field
-          v-if="showSearch"
-          flat
-          dense
-          rounded
-          hide-details
-          label="..."
-          prepend-inner-icon="mdi-magnify"
-          solo-inverted
-        ></v-text-field>
+        <v-form @submit.prevent="doSearchProduct">
+          <v-text-field
+            v-if="showSearch"
+            flat
+            dense
+            rounded
+            hide-details
+            label="..."
+            prepend-inner-icon="mdi-magnify"
+            solo-inverted
+            v-model="searchValue"
+          ></v-text-field>
+        </v-form>
 
         <v-spacer></v-spacer>
 
@@ -594,8 +597,9 @@ export default {
   data: () => ({
     dialog: false,
     dialogHistory: false,
-    drawer: true,
+    drawer: false,
     showSearch: true,
+    searchValue: '',
     menu: false,
     group: null,
     infoCards: [
@@ -638,6 +642,7 @@ export default {
       this.$router.push({ name: 'Login' })
     },
     do_go_to_cart () {
+      // this.$router.push('/cart')
       window.location.replace('/cart')
     },
     doOpenHistoryOrders () {
@@ -684,6 +689,10 @@ export default {
         .finally(() => {
           this.$store.commit('user/getUserDetailInitEnd')
         })
+    },
+    doSearchProduct () {
+      // this.$router.push(`/search/${this.searchValue}`)
+      window.location.replace(`/search/${this.searchValue}`)
     }
   },
   created () {

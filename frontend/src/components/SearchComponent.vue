@@ -102,7 +102,7 @@ export default {
   methods: {
     doApplySearch () {
       this.$store.dispatch('search/loadSearchProducts', {
-        searchValue: this.search_frm.value,
+        searchValue: this.search_frm.value ? this.search_frm.value : '',
         ...this.pagination,
         ...{ current: this.pagination_current }
       })

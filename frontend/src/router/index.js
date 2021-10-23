@@ -60,7 +60,7 @@ const routes = [
   },
   {
     props: true,
-    path: '/search',
+    path: '/search/:search_value',
     name: 'Search',
     meta: { layout: 'main' },
     component: () => import('../views/Search.vue'),
