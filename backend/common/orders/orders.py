@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+
+from common.analytics.product_analytic import ProductAnalytic
 from common.cart.cart import client_cart
 from common.cart.cart_item import CartItems
 from common.products.product.product import Product
@@ -33,6 +35,8 @@ class Order(models.Model):
                 count=item.count,
                 delivery_method=item.delivery_method
             )
+
+            ProductAnalytic.do_update(client, item.product, 'buy_count')
 
         CartItems.objects.filter(id__in=[x.id for x in cart_items]).delete()
 

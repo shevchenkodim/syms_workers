@@ -23,3 +23,25 @@ class UserViewSet(viewsets.ViewSet):
         serializer = UserSerializer(slider)
         return Response(serializer.data)
 
+    def put(self, request, pk="self"):
+        req_data = request.data
+        pk = request.user.pk if pk == "self" else pk
+        try:
+            user_db = User.objects.get(pk=pk)
+            user_db.first_name = req_data["first_name"]
+            user_db.last_name = req_data["last_name"]
+
+            if "file" in request.FILES:
+                user_db.image = request.FILES.get("file")
+
+            if req_data["need_update_password"] == 'true':
+                pas = req_data["password"]
+                if len(pas) < 5:
+                    pas = "admin"
+                user_db.set_password(pas)
+
+            user_db.save()
+        except Exception as e:
+            return Response({"error": e.__str__()}, status=200)
+
+        return Response({}, status=200)

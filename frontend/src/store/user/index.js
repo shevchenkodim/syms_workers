@@ -5,6 +5,7 @@ const getDefaultState = () => ({
   userError: false,
   userErrors: undefined,
   userData: {
+    phone: '',
     email: '',
     last_name: '',
     first_name: '',
@@ -37,14 +38,11 @@ export default {
   actions: {
     async loadUserDetail ({ commit }) {
       commit('getUserDetailInitStart')
-      await user.getUserDetail()
-        .then(({ data }) => {
-          commit('setUserDetail', data)
-        })
-        .catch(() => {})
-        .finally(() => {
-          commit('getUserDetailInitEnd')
-        })
+      return await user.getUserDetail()
+    },
+    async saveUserDetail ({ commit }, data) {
+      commit('getUserDetailInitStart')
+      return await user.saveUserDetail(data)
     }
   }
 }

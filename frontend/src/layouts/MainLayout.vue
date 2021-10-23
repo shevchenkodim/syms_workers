@@ -152,15 +152,134 @@
                 </v-list-item-content>
 
                 <v-list-item-action>
-                  <v-btn
-                    class="mx-2"
-                    fab
-                    dark
-                    small
-                    color="info"
-                  >
-                    <v-icon>mdi-tools</v-icon>
-                  </v-btn>
+                  <v-col cols="auto" class="pl-0">
+                    <v-dialog
+                      transition="dialog-top-transition"
+                      max-width="600"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="mx-2"
+                          fab
+                          dark
+                          small
+                          color="info"
+                          @click="doOpenClientSettings"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-tools</v-icon>
+                        </v-btn>
+                      </template>
+                      <template v-slot:default="dialog">
+                        <v-card>
+                          <v-toolbar
+                            color="primary"
+                            dark
+                          >
+                            Налаштування профілю
+                          </v-toolbar>
+                          <v-card-text>
+                            <form @submit.prevent="doSaveClientDetail">
+                              <input type="submit" hidden>
+                              <v-row class="mt-3">
+                                <v-col cols="6">
+                                  <v-text-field
+                                    label="Email"
+                                    type="email"
+                                    disabled
+                                    dense
+                                    outlined
+                                    clearable
+                                    hide-details="auto"
+                                    placeholder="..."
+                                    v-model="clientDetailForm.email"
+                                  ></v-text-field>
+                                </v-col>
+                                <v-col cols="6">
+                                  <v-text-field
+                                    label="Номер телефону"
+                                    type="text"
+                                    disabled
+                                    dense
+                                    outlined
+                                    clearable
+                                    hide-details="auto"
+                                    placeholder="..."
+                                    v-model="clientDetailForm.phone"
+                                  ></v-text-field>
+                                </v-col>
+                                <v-col cols="6">
+                                  <v-text-field
+                                    label="Прізвище"
+                                    type="text"
+                                    dense
+                                    outlined
+                                    clearable
+                                    hide-details="auto"
+                                    placeholder="..."
+                                    v-model="clientDetailForm.last_name"
+                                  ></v-text-field>
+                                </v-col>
+                                <v-col cols="6">
+                                  <v-text-field
+                                    label="Ім'я"
+                                    type="text"
+                                    dense
+                                    outlined
+                                    clearable
+                                    hide-details="auto"
+                                    placeholder="..."
+                                    v-model="clientDetailForm.first_name"
+                                  ></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                  <v-checkbox
+                                    v-model="clientDetailForm.need_update_password"
+                                    label="Встановити новий пароль"
+                                  ></v-checkbox>
+                                  <v-text-field
+                                    label="Пароль"
+                                    type="password"
+                                    autocomplete="on"
+                                    :disabled="!clientDetailForm.need_update_password"
+                                    dense
+                                    outlined
+                                    clearable
+                                    hide-details="auto"
+                                    placeholder="*******"
+                                    v-model="clientDetailForm.password"
+                                  ></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                  <v-file-input
+                                    label="Фото"
+                                    truncate-length="15"
+                                    v-model="clientDetailForm.file"
+                                  ></v-file-input>
+                                </v-col>
+                              </v-row>
+                            </form>
+                          </v-card-text>
+                          <v-card-actions class="justify-space-between">
+                            <v-btn
+                              text
+                              @click="dialog.value = false"
+                            >
+                              Вийти
+                            </v-btn>
+                            <v-btn
+                              @click="doSaveClientDetail"
+                              class="primary"
+                            >
+                              <v-icon>mdi-check-all</v-icon>
+                              Зберегти
+                            </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </template>
+                    </v-dialog>
+                  </v-col>
                 </v-list-item-action>
               </v-list-item>
             </v-list>
@@ -204,7 +323,7 @@
                             Історія замовленнь
                           </span>
                         </template>
-                        <template v-slot:default="dialog">
+                        <template v-slot:default="dialogHistory">
                           <v-card>
                             <v-toolbar
                               color="primary"
@@ -212,7 +331,7 @@
                             >
                               Історія замовленнь
                             </v-toolbar>
-                            <v-card-text style="height: 600px; padding-top: 20px">
+                            <v-card-text style="height: 450px; padding-top: 20px">
                               <v-row v-for="(h, index) in orderHistory" :key="index + '_hist_ord'">
                                 <v-col cols="1 d-flex align-center justify-center">
                                   <b>№{{ index + 1 }}</b>
@@ -236,7 +355,7 @@
                             <v-card-actions class="justify-end">
                               <v-btn
                                 text
-                                @click="dialog.value = false"
+                                @click="dialogHistory.value = false"
                               >
                                 Вийти
                               </v-btn>
@@ -473,6 +592,8 @@ export default {
     })
   },
   data: () => ({
+    dialog: false,
+    dialogHistory: false,
     drawer: true,
     showSearch: true,
     menu: false,
@@ -495,7 +616,17 @@ export default {
         items: ['Kabanchik.ua', 'Вчасно', 'Zakupki.prom.ua']
       }
     ],
-    orderHistory: []
+    orderHistory: [],
+    clientDetailForm: {
+      first_name: '',
+      last_name: '',
+      phone: '',
+      email: '',
+      image: '',
+      file: null,
+      need_update_password: false,
+      password: ''
+    }
   }),
   methods: {
     doCheckShowSearchInput () {
@@ -508,7 +639,6 @@ export default {
     },
     do_go_to_cart () {
       window.location.replace('/cart')
-      // this.$router.push({ name: 'Cart' })
     },
     doOpenHistoryOrders () {
       this.orderHistory = []
@@ -516,12 +646,50 @@ export default {
         .then(resp => {
           this.orderHistory = resp.data
         })
+    },
+    doOpenClientSettings () {},
+    doLoadClientDetailInfo () {
+      this.$store.dispatch('user/loadUserDetail')
+        .then(({ data }) => {
+          this.$store.commit('user/setUserDetail', data)
+          this.clientDetailForm = Object.assign(this.clientDetailForm, data)
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.$store.commit('user/getUserDetailInitEnd')
+        })
+    },
+    doSaveClientDetail () {
+      var fData = new FormData()
+
+      fData.append('first_name', this.clientDetailForm.first_name)
+      fData.append('last_name', this.clientDetailForm.last_name)
+      fData.append('need_update_password', this.clientDetailForm.need_update_password)
+      fData.append('password', this.clientDetailForm.password)
+      fData.append('file', this.clientDetailForm.file)
+
+      this.$store.dispatch('user/saveUserDetail', fData)
+        .then(resp => {
+          if (resp.status === 200) {
+            console.log(resp.data)
+            if (resp.data.error) {
+              this.$toastr('error', resp.data.error)
+            } else {
+              this.doLoadClientDetailInfo()
+              this.$forceUpdate()
+            }
+          }
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.$store.commit('user/getUserDetailInitEnd')
+        })
     }
   },
   created () {
     this.doCheckShowSearchInput()
     this.$store.dispatch('common/loadCategories')
-    this.$store.dispatch('user/loadUserDetail')
+    this.doLoadClientDetailInfo()
   },
   watch: {
     group () {
