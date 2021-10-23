@@ -1,4 +1,5 @@
 import common from '@/api/common'
+import comment from '@/api/comment'
 
 const getDefaultProductState = () => ({
   isProductLoading: false,
@@ -73,6 +74,9 @@ export default {
         .finally(() => {
           commit('initEnd')
         })
+    },
+    async loadProductComments ({ commit, state }, data) {
+      return await comment.getProductComments(data.productId, data.limit, data.current * data.limit - data.limit)
     }
   }
 }

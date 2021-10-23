@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Avg
 from django.conf import settings
 from common.products.product.product import Product
+from common.tools import from_db_to_datetime
 
 
 class ProductComment(models.Model):
@@ -35,3 +36,17 @@ class ProductComment(models.Model):
         if result.get('rating_stars__avg'):
             result_number = int(result.get('rating_stars__avg'))
         return result_number
+
+    def do_json(self):
+        return {
+            "id": self.id,
+            "owner": {
+                "full_name": f"{self.owner.last_name} {self.owner.first_name}",
+                "image": self.owner.image.url
+            },
+            "text": self.text,
+            "likes_count": self.likes_count,
+            "dislikes_count": self.dislikes_count,
+            "rating_stars": self.rating_stars,
+            "date_time_add": from_db_to_datetime(self.date_time_add, seconds=False)
+        }

@@ -2,7 +2,7 @@
     <v-container fluid>
       <v-row>
         <v-col cols="12">
-          <h2>Apple iPhone 12 Pro</h2>
+          <h2>{{ productDetail.name }}</h2>
         </v-col>
       </v-row>
       <v-row>
@@ -57,69 +57,30 @@
               </v-list>
             </v-col>
           </v-row>
-          <v-row>
+          <v-row v-if="productComments.length > 0">
             <v-col cols="12">
-              <h2>Відгуки</h2>
+              <h2>Відгуки[{{productComments.length}}]</h2>
             </v-col>
             <v-col cols="12">
               <v-list three-line>
-                <template v-for="(v, i) in [1, 2, 3]">
-                  <v-divider :key="i + '_comment'"></v-divider>
-
-                  <v-subheader :key="i + '_s_comment'">
-                    <v-row>
-                      <v-col cols="12" class="d-flex justify-space-between pb-0 pt-0">
-                        <span><b>Dmytro Shevchenko</b></span>
-                        <span>
-                          <v-rating
-                            :value="4"
-                            color="amber"
-                            dense
-                            half-increments
-                            readonly
-                            size="14"
-                          ></v-rating>
-                        </span>
-                      </v-col>
-                    </v-row>
-                  </v-subheader>
-
-                  <v-list-item :key="i">
-                    <v-list-item-avatar>
-                      <v-img src="https://cdn-icons-png.flaticon.com/512/149/149071.png"></v-img>
-                    </v-list-item-avatar>
-
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        Some comment, some comment, some comment, some comment
-                      </v-list-item-title>
-                      <v-list-item-subtitle class="d-flex align-center justify-space-between">
-                        <span>
-                          <v-btn
-                            icon
-                            color="green"
-                            class="mr-1"
-                          >
-                            <v-icon>mdi-thumb-up</v-icon>
-                            4
-                          </v-btn>
-                          <v-btn
-                            icon
-                            color="error"
-                            class="ml-1"
-                          >
-                            <v-icon>mdi-thumb-down</v-icon>
-                            7
-                          </v-btn>
-                        </span>
-                        <span class="text-muted">
-                          27.09.2021 15.05
-                        </span>
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
+                <template v-for="(comment, i) in productComments">
+                  <Comment
+                    :comment="comment"
+                    :key="i + '_comment_p'"
+                  ></Comment>
                 </template>
               </v-list>
+            </v-col>
+            <v-col cols="12">
+              <v-row v-if="productComments.length > 0" class="d-flex justify-center">
+                <div class="text-center">
+                  <v-pagination
+                    v-model="pagination_current"
+                    :length="parseInt(Math.ceil(pagination.count / pagination.limit))"
+                    :total-visible="7"
+                  ></v-pagination>
+                </div>
+              </v-row>
             </v-col>
           </v-row>
         </v-col>
@@ -206,16 +167,16 @@
                 <v-card-text class="white mb-0 pb-0">
                   <v-list dense light>
                     <v-list-item-group>
-                      <v-list-item>
-                        <v-list-item-icon>
-                          <v-icon>mdi-link-variant</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Сторінка продавця
-                          </v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
+<!--                      <v-list-item>-->
+<!--                        <v-list-item-icon>-->
+<!--                          <v-icon>mdi-link-variant</v-icon>-->
+<!--                        </v-list-item-icon>-->
+<!--                        <v-list-item-content>-->
+<!--                          <v-list-item-title>-->
+<!--                            Сторінка продавця-->
+<!--                          </v-list-item-title>-->
+<!--                        </v-list-item-content>-->
+<!--                      </v-list-item>-->
 
                       <v-list-item>
                         <v-list-item-icon>
@@ -292,10 +253,11 @@
 
 <script>
 import Carousel from '@/components/ThirdParty/Carousel'
+import Comment from '@/components/Products/Comment'
 import { mapGetters } from 'vuex'
 export default {
   name: 'ProductComponent',
-  components: { Carousel },
+  components: { Carousel, Comment },
   props: ['product_code'],
   computed: {
     ...mapGetters('product', ['getBackendUrl']),
@@ -304,13 +266,37 @@ export default {
       sellerDetail: 'product/getSellerData'
     })
   },
-  data: () => ({}),
+  data: () => ({
+    productComments: [],
+    pagination_current: 1,
+    pagination: {
+      limit: 4,
+      count: 0
+    }
+  }),
   methods: {
     doInit () {
       this.doLoadProductDetail()
     },
+    doLoadComments (sleep = 200) {
+      this.productComments = []
+      if (!this.productDetail.product_id) { return }
+      setTimeout(() => {
+        this.$store.dispatch('product/loadProductComments', {
+          productId: this.productDetail.product_id,
+          ...this.pagination,
+          ...{ current: this.pagination_current }
+        })
+          .then(({ data }) => {
+            this.productComments = data.rows
+            this.pagination.count = data.params.count
+          })
+      }, sleep)
+    },
     doLoadProductDetail () {
       this.$store.dispatch('product/loadProductData', this.product_code)
+      this.$forceUpdate()
+      // this.doLoadComments(1000)
     },
     doGoToCart () {
       window.location.replace('/cart')
@@ -329,6 +315,12 @@ export default {
   mounted () {
     this.doInit()
     this.$store.dispatch('cart/loadCartItems')
+  },
+  watch: {
+    pagination_current: function (val) {
+      this.pagination_current = val
+      // this.doLoadComments(1000)
+    }
   }
 }
 </script>

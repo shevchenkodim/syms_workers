@@ -120,6 +120,12 @@ export default {
   mounted () {
     this.search_frm.value = this.search_value
     this.doApplySearch()
+  },
+  watch: {
+    pagination_current: function (val) {
+      this.pagination_current = val
+      this.doApplySearch()
+    }
   }
 }
 </script>
