@@ -87,6 +87,7 @@
         cols="3"
       >
         <Product
+          @add_product_to_cart="doLoadProducts"
           :mainPath="getBackendUrl"
           :product="product"
         ></Product>

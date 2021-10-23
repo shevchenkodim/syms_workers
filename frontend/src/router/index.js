@@ -59,6 +59,14 @@ const routes = [
     beforeEnter: requireAuthenticated
   },
   {
+    props: true,
+    path: '/search',
+    name: 'Search',
+    meta: { layout: 'main' },
+    component: () => import('../views/Search.vue'),
+    beforeEnter: requireAuthenticated
+  },
+  {
     path: '/login',
     name: 'Login',
     meta: { layout: 'auth' },

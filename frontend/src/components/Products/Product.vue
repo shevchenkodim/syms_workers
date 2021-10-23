@@ -87,6 +87,7 @@
 <script>
 export default {
   name: 'NoveltyProduct',
+  emits: ['add_product_to_cart'],
   props: {
     product: {
       type: Object,
@@ -108,6 +109,7 @@ export default {
             this.$forceUpdate()
           }
         })
+      this.$emit('add_product_to_cart')
     }
   }
 }
